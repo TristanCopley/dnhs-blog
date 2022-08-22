@@ -2,10 +2,10 @@
   
     
         "post0": {
-            "title": "Title",
+            "title": "Python Notebook",
             "content": "print(&#39;hello&#39;) . hello .",
-            "url": "https://tristancopley.github.io/dnhs-blog/2022/08/22/hellopy.html",
-            "relUrl": "/2022/08/22/hellopy.html",
+            "url": "https://tristancopley.github.io/dnhs-blog/jupyter/2022/08/22/hellopy.html",
+            "relUrl": "/jupyter/2022/08/22/hellopy.html",
             "date": " • Aug 22, 2022"
         }
         
@@ -13,10 +13,10 @@
   
     
         ,"post1": {
-            "title": "Title",
+            "title": "Java Notebook",
             "content": "System.out.println(&quot;Hello World&quot;); . Hello World .",
-            "url": "https://tristancopley.github.io/dnhs-blog/2022/08/22/hellojava.html",
-            "relUrl": "/2022/08/22/hellojava.html",
+            "url": "https://tristancopley.github.io/dnhs-blog/jupyter/2022/08/22/hellojava.html",
+            "relUrl": "/jupyter/2022/08/22/hellojava.html",
             "date": " • Aug 22, 2022"
         }
         
