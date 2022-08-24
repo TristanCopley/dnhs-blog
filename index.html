@@ -71,7 +71,21 @@ window.onload = wrap_img;
 </header>
 <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <div class="home"><p>This site is built with <a href="https://github.com/fastai/fastpages">fastpages</a>, An easy to use blogging platform with extra features for Jupyter Notebooks.</p>
+        <style>
+
+  canvas {
+
+      position: absolute;
+      z-index: -1;
+      width: 10vw;
+      height: 100vh;
+    
+  }
+
+</style>
+
+
+<div class="home"><p>This site is built with <a href="https://github.com/fastai/fastpages">fastpages</a>, An easy to use blogging platform with extra features for Jupyter Notebooks.</p>
 
 <p><img src="/dnhs-blog/images/diagram.png" alt="" title="https://github.com/fastai/fastpages" /></p>
 
@@ -128,16 +142,12 @@ window.onload = wrap_img;
 
     <script type="module" defer>
 
-    console.log("code code code")
-
-    alert('hello')
-
     import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r99/three.module.min.js';
     
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
     
-    const renderer = new THREE.WebGLRenderer();
+    const renderer = new THREE.WebGLRenderer( canvas );
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
     
@@ -150,7 +160,9 @@ window.onload = wrap_img;
     
     function animate() {
     
-        console.log(THREE)
+         cube.rotation.x += 0.01;
+         cube.rotation.y += 0.01;
+         cube.rotation.z += 0.01;
     
         requestAnimationFrame( animate );
         renderer.render( scene, camera );
