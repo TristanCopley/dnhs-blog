@@ -2,6 +2,20 @@
 layout: default
 ---
 
+<style>
+
+  canvas {
+
+      position: absolute;
+      z-index: -1;
+      width: 10vw;
+      height: 100vh;
+    
+  }
+
+</style>
+
+
 <div class="home">
   {%- if page.title -%}
     <h1 class="page-heading">{{ page.title }}</h1>
@@ -81,16 +95,12 @@ layout: default
 
   <script type="module" defer>
 
-    console.log("code code code")
-
-    alert('hello')
-
     import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r99/three.module.min.js';
     
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
     
-    const renderer = new THREE.WebGLRenderer();
+    const renderer = new THREE.WebGLRenderer( canvas );
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
     
@@ -103,7 +113,9 @@ layout: default
     
     function animate() {
     
-        console.log(THREE)
+         cube.rotation.x += 0.01;
+         cube.rotation.y += 0.01;
+         cube.rotation.z += 0.01;
     
         requestAnimationFrame( animate );
         renderer.render( scene, camera );
