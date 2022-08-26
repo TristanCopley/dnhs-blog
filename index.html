@@ -66,7 +66,7 @@ window.onload = wrap_img;
           </span>
         </label>
 
-        <div class="trigger"><a class="page-link" href="/dnhs-blog/about/">About Me</a><a class="page-link" href="/dnhs-blog/search/">Search</a><a class="page-link" href="/dnhs-blog/categories/">Tags</a></div>
+        <div class="trigger"><a class="page-link" href="/dnhs-blog/about/">About Me</a><a class="page-link" href="/dnhs-blog/about/">About Me</a><a class="page-link" href="/dnhs-blog/search/">Search</a><a class="page-link" href="/dnhs-blog/categories/">Tags</a></div>
       </nav></div>
 </header>
 <main class="page-content" aria-label="Content">
@@ -75,7 +75,7 @@ window.onload = wrap_img;
 
   canvas {
 
-      position: absolute;
+      position: fixed;
       z-index: -1;
       width: 10vw;
       height: 100vh;
@@ -157,6 +157,9 @@ window.onload = wrap_img;
     scene.add( cube );
     
     camera.position.z = 5;
+
+    const directionalLight = new THREE.DirectionalLight( 0xffffff, 3 );
+    scene.add( directionalLight );
     
     function animate() {
     

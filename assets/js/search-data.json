@@ -71,6 +71,17 @@
   
 
   
+      ,"page2": {
+          "title": "About Me",
+          "content": "Unit 1: .",
+          "url": "https://tristancopley.github.io/dnhs-blog/about/",
+          "relUrl": "/about/",
+          "date": ""
+      }
+      
+  
+
+  
 
   
   
@@ -92,7 +103,7 @@
   
 
   
-      ,"page10": {
+      ,"page11": {
           "title": "",
           "content": "Sitemap: {{ “sitemap.xml” | absolute_url }} | .",
           "url": "https://tristancopley.github.io/dnhs-blog/robots.txt",
