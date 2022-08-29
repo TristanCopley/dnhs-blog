@@ -104,15 +104,26 @@ layout: default
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
     
-    const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+    const geometry = new THREE.SphereGeometry( 1, 32, 16 );
+    const material = new THREE.MeshPhongMaterial( { color: 0x00ff00 } );
     const cube = new THREE.Mesh( geometry, material );
+    cube.castShadows = true;
+    cube.receiveShadows = true;
     scene.add( cube );
     
-    camera.position.z = 5;
+    renderer.shadowMap.enabled = true;
 
-    const directionalLight = new THREE.DirectionalLight( 0xffffff, 3 );
-    scene.add( directionalLight );
+    camera.position.z = 15;
+
+    const pointLight = new THREE.PointLight( 0xffffff, 3);
+    pointLight.position.x = 10;
+    pointLight.position.y = 10;
+    pointLight.position.z = -10;
+    pointLight.castShadows = true;
+    scene.add( pointLight );
+
+    const aLight = new THREE.AmbientLight( 0xffffff, 10);
+    scene.add( aLight );
     
     function animate() {
     
@@ -126,5 +137,4 @@ layout: default
     animate();
     
     </script>
-
 </div>
