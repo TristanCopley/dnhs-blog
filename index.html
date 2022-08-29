@@ -163,6 +163,8 @@ window.onload = wrap_img;
     <script type="module" defer>
 
     import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r99/three.module.min.js';
+
+    let bodies = [];
     
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -173,33 +175,87 @@ window.onload = wrap_img;
     
     const geometry = new THREE.SphereGeometry( 1, 32, 16 );
     const material = new THREE.MeshPhongMaterial( { color: 0x00ff00 } );
-    const cube = new THREE.Mesh( geometry, material );
-    cube.castShadows = true;
-    cube.receiveShadows = true;
-    scene.add( cube );
+
+    for(let i = 0; i < 200; i++) {
+
+        let cube = new THREE.Mesh( geometry, material );
+        bodies.push( cube )
+        scene.add( cube );
+        cube.position.x += Math.random() * 100 - 50;
+        cube.position.y += Math.random() * 100 - 50;
+        cube.position.z += Math.random() * 100 - 50;
+        cube.mass = 1;
+        cube.velocity = {
+
+            x: Math.random() * 0.2 - 0.1,
+            y: Math.random() * 0.2 - 0.1,
+            z: Math.random() * 0.2 - 0.1
+
+        };
+
+    }
     
     renderer.shadowMap.enabled = true;
 
-    camera.position.z = 15;
-
     const pointLight = new THREE.PointLight( 0xffffff, 3);
-    pointLight.position.x = 10;
-    pointLight.position.y = 10;
-    pointLight.position.z = -10;
+    pointLight.position.x = 0;
+    pointLight.position.y = 0;
+    pointLight.position.z = 0;
     pointLight.castShadows = true;
     scene.add( pointLight );
 
-    const aLight = new THREE.AmbientLight( 0xffffff, 10);
+    const aLight = new THREE.AmbientLight( 0xffffff, 0.2);
     scene.add( aLight );
     
     function animate() {
     
-         cube.rotation.x += 0.01;
-         cube.rotation.y += 0.01;
-         cube.rotation.z += 0.01;
-    
+        for(let x = 0; x < bodies.length; x++) {
+
+            for(let y = x + 1; y < bodies.length; y++) {
+                
+                let xDiff = bodies[x].position.x-bodies[y].position.x
+                let yDiff = bodies[x].position.y-bodies[y].position.y
+                let zDiff = bodies[x].position.z-bodies[y].position.z
+
+                let scalar = Math.sqrt((xDiff)**2 + (yDiff)**2 + (zDiff)**2) || 10000000
+                let force = 0.01 * (bodies[x].mass * bodies[y].mass) / (scalar**2);
+
+                bodies[x].velocity.x -= xDiff / scalar * force;
+                bodies[x].velocity.y -= yDiff / scalar * force;
+                bodies[x].velocity.z -= zDiff / scalar * force;
+
+                bodies[y].velocity.x += xDiff / scalar * force;
+                bodies[y].velocity.y += yDiff / scalar * force;
+                bodies[y].velocity.z += zDiff / scalar * force;
+
+            }   
+
+        }
+
+        let finalCameraPositionX = 0 
+        let finalCameraPositionY = 0 
+        let finalCameraPositionZ = 0 
+        let finalZ = 0
+
+        for(let z = 0; z < bodies.length; z++) {
+                
+                bodies[z].position.x += bodies[z].velocity.x;
+                bodies[z].position.y += bodies[z].velocity.y;
+                bodies[z].position.z += bodies[z].velocity.z;
+
+                finalCameraPositionX += bodies[z].position.x;
+                finalCameraPositionY += bodies[z].position.y;
+                finalCameraPositionZ += bodies[z].position.z;
+
+        }   
+
+        camera.position.x = finalCameraPositionX / bodies.length;
+        camera.position.y = finalCameraPositionY / bodies.length;
+        camera.position.z = (finalCameraPositionZ / bodies.length + 100)
+
         requestAnimationFrame( animate );
         renderer.render( scene, camera );
+
     }
     animate();
     
