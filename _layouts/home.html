@@ -97,31 +97,62 @@ layout: default
 
     import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r99/three.module.min.js';
     import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js';
+    import * as dat from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
+    
+    const gui = new dat.GUI()
+  
   
     let bodies = [];
   
-    let timeSpeed = 10;
+    const constants = {
+  
+      timeSteps: 100,
+      gravity: 0.01
+  
+    }
     
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 4000 );
     camera.position.z = 200
     
     const renderer = new THREE.WebGLRenderer( );
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
     
-    const geometry = new THREE.SphereGeometry( 1, 32, 16 );
-    const material = new THREE.MeshPhongMaterial( { color: 0x30ad2b } );
   
     for(let i = 0; i < 2; i++) {
-  
+       const geometry = new THREE.SphereGeometry( 1, 32, 16 );
+        const material = new THREE.MeshPhongMaterial( { color: 0x30ad2b } );
+        material.color.set("#" + Math.floor(Math.random()*16777215).toString(16));
         let cube = new THREE.Mesh( geometry, material );
         bodies.push( cube );
         scene.add( cube );
+        cube.position.x += Math.random() * 500 - 250;
+        cube.position.y += Math.random() * 500 - 250;
+        cube.position.z += Math.random() * 500 - 250;
+        cube.mass = 10;
+        cube.trailPoints = [],
+        cube.line = false;
+        cube.velocity = {
+  
+            x: Math.random() * 2.4 - 1.2,
+            y: Math.random() * 2.4 - 1.2,
+            z: Math.random() * 2.4 - 1.2
+  
+        };
+  
+    }
+  
+    const geometry = new THREE.SphereGeometry( 4, 32, 16 );
+        const material = new THREE.MeshPhongMaterial( { color: 0xffffff } );
+    let cube = new THREE.Mesh( geometry, material );
+        bodies.push( cube );
+        scene.add( cube );
+        cube.material.color.set('white')
         cube.position.x += Math.random() * 100 - 50;
         cube.position.y += Math.random() * 100 - 50;
         cube.position.z += Math.random() * 100 - 50;
-        cube.mass = 10;
+        cube.mass = 400;
         cube.trailPoints = [],
         cube.line = false;
         cube.velocity = {
@@ -132,15 +163,7 @@ layout: default
   
         };
   
-    }
-  
     let trails = [];
-  
-    const planeGeo = new THREE.PlaneGeometry(500, 400);
-    const planeMaterial = new THREE.MeshBasicMaterial( {color: 0x303838} );
-    let plane = new THREE.Mesh( planeGeo, planeMaterial );
-    plane.position.z = -100;
-    scene.add(plane)
     
     renderer.shadowMap.enabled = true;
   
@@ -155,10 +178,17 @@ layout: default
     scene.add( aLight );
   
     const controls = new OrbitControls(camera, renderer.domElement);
+  
+    const constantsFolder = gui.addFolder('Constants');
+    constantsFolder.add(constants, 'timeSteps', 0, 100);
+    constantsFolder.open();
     
     function animate() {
   
-      for (let t = 0; t < timeSpeed; t++) {        
+  
+      for (let t = 0; t < constants.timeSteps; t++) {        
+  
+          if (constants.timeSteps === 0) continue;
     
           for(let x = 0; x < bodies.length; x++) {
   
@@ -169,7 +199,7 @@ layout: default
                 let zDiff = bodies[x].position.z-bodies[y].position.z;
   
                 let scalar = Math.sqrt((xDiff)**2 + (yDiff)**2 + (zDiff)**2) || 10000000;
-                let force = 0.01 * (bodies[x].mass * bodies[y].mass) / (scalar**2);
+                let force = constants.gravity * (bodies[x].mass * bodies[y].mass) / (scalar**2);
   
                 bodies[x].velocity.x -= xDiff / scalar * force;
                 bodies[x].velocity.y -= yDiff / scalar * force;
@@ -185,9 +215,9 @@ layout: default
   
           for(let z = 0; z < bodies.length; z++) {
                   
-            bodies[z].position.x += bodies[z].velocity.x;
-            bodies[z].position.y += bodies[z].velocity.y;
-            bodies[z].position.z += bodies[z].velocity.z;
+            bodies[z].position.x += bodies[z].velocity.x / bodies[z].mass;
+            bodies[z].position.y += bodies[z].velocity.y / bodies[z].mass;
+            bodies[z].position.z += bodies[z].velocity.z / bodies[z].mass;
   
           }   
   
@@ -204,26 +234,28 @@ layout: default
       finalCameraPositionZ += bodies[z].position.z;
   
       bodies[z].trailPoints.push(new THREE.Vector3(bodies[z].position.x, bodies[z].position.y, bodies[z].position.z));
-      if (bodies[z].trailPoints.length > 100) bodies[z].trailPoints.shift();
+      if (bodies[z].trailPoints.length > 1000) bodies[z].trailPoints.shift();
   
       // CREATE THE LINE
       if(typeof bodies[z].line == 'object') scene.remove(bodies[z].line);
       let line = new THREE.Line( new THREE.BufferGeometry().setFromPoints( bodies[z].trailPoints ), new THREE.LineBasicMaterial({color: 0xff00ff}));
+      line.material.color.set(bodies[z].material.color)
       bodies[z].line = line;
       scene.add(line);
   
-    }   
-    
+    }
   
-    camera.position.x = plane.position.x = pointLight.position.x = finalCameraPositionX / bodies.length;
-    camera.position.y = plane.position.y = pointLight.position.y = finalCameraPositionY / bodies.length;
-    camera.position.z = plane.position.z = pointLight.position.z = finalCameraPositionZ / bodies.length + 100;
+    camera.position.x -= controls.target.x - finalCameraPositionX / bodies.length //plane.position.x = pointLight.position.x = finalCameraPositionX / bodies.length;
+    camera.position.y -= controls.target.y - finalCameraPositionY / bodies.length//plane.position.y = pointLight.position.y = finalCameraPositionY / bodies.length;
+    camera.position.z -= controls.target.z - finalCameraPositionZ / bodies.length//plane.position.z = pointLight.position.z = finalCameraPositionZ / bodies.length;
   
-    controls.update();
+    controls.target = new THREE.Vector3(finalCameraPositionX / bodies.length, finalCameraPositionY / bodies.length, finalCameraPositionZ / bodies.length);
   
-    requestAnimationFrame( animate );
-      
-    renderer.render( scene, camera );
+      controls.update();
+  
+      renderer.render( scene, camera );
+  
+      requestAnimationFrame( animate );
   
     }
   
