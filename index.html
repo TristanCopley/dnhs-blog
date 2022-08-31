@@ -154,173 +154,191 @@ window.onload = wrap_img;
 
     <script type="module" defer>
 
-    import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r99/three.module.min.js';
-    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js';
-    import * as dat from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
-    
-    const gui = new dat.GUI()
-  
-  
-    let bodies = [];
-  
-    const constants = {
-  
-      timeSteps: 100,
-      gravity: 0.01
-  
+import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r99/three.module.min.js';
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js';
+import * as dat from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
+
+const gui = new dat.GUI()
+
+
+let bodies = [];
+
+const constants = {
+
+  timeSteps: 100,
+  gravity: 6.6743e-11,
+  scale: 0.000000001,
+
+}
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 4000 );
+camera.position.z = 200
+
+const renderer = new THREE.WebGLRenderer( );
+renderer.setSize( window.innerWidth, window.innerHeight );
+document.body.appendChild( renderer.domElement );
+
+class AstronomicalObject {
+
+  constructor(radius, mass, position, velocity) {
+
+    const geometry = new THREE.SphereGeometry( radius * constants.scale, 32, 16 );
+    const material = new THREE.MeshPhongMaterial( { color: 0xffffff } );
+    this.body = new THREE.Mesh( geometry, material );
+    bodies.push( this );
+    scene.add( this.body );
+    this.body.position.x = 0;
+    this.body.position.y = 0;
+    this.body.position.z = 0;
+    this.mass = mass;
+    this.trailPoints = [],
+    this.line = false;
+    this.motion = {
+
+      position: {
+
+        x: 0,
+        y: 0,
+        z: 0 
+
+      },
+
+      velocity: {
+
+        x: 0,
+        y: 0,
+        z: 0 
+
+      }
+
     }
-    
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 4000 );
-    camera.position.z = 200
-    
-    const renderer = new THREE.WebGLRenderer( );
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    document.body.appendChild( renderer.domElement );
-    
-  
-    for(let i = 0; i < 2; i++) {
-       const geometry = new THREE.SphereGeometry( 1, 32, 16 );
-        const material = new THREE.MeshPhongMaterial( { color: 0x30ad2b } );
-        material.color.set("#" + Math.floor(Math.random()*16777215).toString(16));
-        let cube = new THREE.Mesh( geometry, material );
-        bodies.push( cube );
-        scene.add( cube );
-        cube.position.x += Math.random() * 500 - 250;
-        cube.position.y += Math.random() * 500 - 250;
-        cube.position.z += Math.random() * 500 - 250;
-        cube.mass = 10;
-        cube.trailPoints = [],
-        cube.line = false;
-        cube.velocity = {
-  
-            x: Math.random() * 2.4 - 1.2,
-            y: Math.random() * 2.4 - 1.2,
-            z: Math.random() * 2.4 - 1.2
-  
-        };
-  
-    }
-  
-    const geometry = new THREE.SphereGeometry( 4, 32, 16 );
-        const material = new THREE.MeshPhongMaterial( { color: 0xffffff } );
-    let cube = new THREE.Mesh( geometry, material );
-        bodies.push( cube );
-        scene.add( cube );
-        cube.material.color.set('white')
-        cube.position.x += Math.random() * 100 - 50;
-        cube.position.y += Math.random() * 100 - 50;
-        cube.position.z += Math.random() * 100 - 50;
-        cube.mass = 400;
-        cube.trailPoints = [],
-        cube.line = false;
-        cube.velocity = {
-  
-            x: Math.random() * 0.2 - 0.1,
-            y: Math.random() * 0.2 - 0.1,
-            z: Math.random() * 0.2 - 0.1
-  
-        };
-  
-    let trails = [];
-    
-    renderer.shadowMap.enabled = true;
-  
-    const pointLight = new THREE.PointLight( 0xffffff, 3);
-    pointLight.position.x = 0;
-    pointLight.position.y = 0;
-    pointLight.position.z = 0;
-    pointLight.castShadows = true;
-    scene.add( pointLight );
-  
-    const aLight = new THREE.AmbientLight( 0xffffff, 0.8);
-    scene.add( aLight );
-  
-    const controls = new OrbitControls(camera, renderer.domElement);
-  
-    const constantsFolder = gui.addFolder('Constants');
-    constantsFolder.add(constants, 'timeSteps', 0, 100);
-    constantsFolder.open();
-    
-    function animate() {
-  
-  
-      for (let t = 0; t < constants.timeSteps; t++) {        
-  
-          if (constants.timeSteps === 0) continue;
-    
-          for(let x = 0; x < bodies.length; x++) {
-  
-              for(let y = x + 1; y < bodies.length; y++) {
-                  
-                let xDiff = bodies[x].position.x-bodies[y].position.x;
-                let yDiff = bodies[x].position.y-bodies[y].position.y;
-                let zDiff = bodies[x].position.z-bodies[y].position.z;
-  
-                let scalar = Math.sqrt((xDiff)**2 + (yDiff)**2 + (zDiff)**2) || 10000000;
-                let force = constants.gravity * (bodies[x].mass * bodies[y].mass) / (scalar**2);
-  
-                bodies[x].velocity.x -= xDiff / scalar * force;
-                bodies[x].velocity.y -= yDiff / scalar * force;
-                bodies[x].velocity.z -= zDiff / scalar * force;
-  
-                bodies[y].velocity.x += xDiff / scalar * force;
-                bodies[y].velocity.y += yDiff / scalar * force;
-                bodies[y].velocity.z += zDiff / scalar * force;
-  
-              }   
-  
-          }
-  
-          for(let z = 0; z < bodies.length; z++) {
-                  
-            bodies[z].position.x += bodies[z].velocity.x / bodies[z].mass;
-            bodies[z].position.y += bodies[z].velocity.y / bodies[z].mass;
-            bodies[z].position.z += bodies[z].velocity.z / bodies[z].mass;
-  
+
+    if (position) this.motion.position = new THREE.Vector3(...position);
+    if (velocity) this.motion.velocity = new THREE.Vector3(...velocity);
+
+  }
+
+}
+
+let sun = new AstronomicalObject(6.95700e8, 1.989e30, [0, 0, 0], [0, 0, 0]);
+sun.body.material.color.set('yellow');
+
+let earth = new AstronomicalObject(6371000, 5.972e24, [151000000000, 0, 0], [0, 29800, 0]);
+earth.body.material.color.set('green');
+
+let moon = new AstronomicalObject(1737400, 7.347e22, [151000000000 + 384399000, 0, 0], [0, 29800 + 1022, 0])
+
+let trails = [];
+
+renderer.shadowMap.enabled = true;
+
+const pointLight = new THREE.PointLight( 0xffffff, 3);
+pointLight.position.x = 0;
+pointLight.position.y = 0;
+pointLight.position.z = 0;
+pointLight.castShadows = true;
+scene.add( pointLight );
+
+const aLight = new THREE.AmbientLight( 0xffffff, 0.8);
+scene.add( aLight );
+
+const controls = new OrbitControls(camera, renderer.domElement);
+
+const constantsFolder = gui.addFolder('Constants');
+constantsFolder.add(constants, 'timeSteps', 0, 10000);
+constantsFolder.open();
+
+function animate() {
+
+  for (let t = 0; t < constants.timeSteps; t++) {        
+
+      if (constants.timeSteps === 0) continue;
+
+      for(let x = 0; x < bodies.length; x++) {
+
+          for(let y = x + 1; y < bodies.length; y++) {
+              
+            let xDiff = bodies[x].motion.position.x-bodies[y].motion.position.x;
+            let yDiff = bodies[x].motion.position.y-bodies[y].motion.position.y;
+            let zDiff = bodies[x].motion.position.z-bodies[y].motion.position.z;
+
+            let scalar = Math.sqrt((xDiff)**2 + (yDiff)**2 + (zDiff)**2) || 1;
+            let force = constants.gravity * (bodies[x].mass * bodies[y].mass) / (scalar**2);
+
+            bodies[x].motion.velocity.x -= (xDiff / scalar * force) / bodies[x].mass;
+            bodies[x].motion.velocity.y -= (yDiff / scalar * force) / bodies[x].mass;
+            bodies[x].motion.velocity.z -= (zDiff / scalar * force) / bodies[x].mass;
+
+            bodies[y].motion.velocity.x += (xDiff / scalar * force) / bodies[y].mass;
+            bodies[y].motion.velocity.y += (yDiff / scalar * force) / bodies[y].mass;
+            bodies[y].motion.velocity.z += (zDiff / scalar * force) / bodies[y].mass;
+
           }   
-  
-    }
-  
-    let finalCameraPositionX = 0;
-    let finalCameraPositionY = 0;
-    let finalCameraPositionZ = 0;
-  
-    for(let z = 0; z < bodies.length; z++) {
-  
-      finalCameraPositionX += bodies[z].position.x;
-      finalCameraPositionY += bodies[z].position.y;
-      finalCameraPositionZ += bodies[z].position.z;
-  
-      bodies[z].trailPoints.push(new THREE.Vector3(bodies[z].position.x, bodies[z].position.y, bodies[z].position.z));
-      if (bodies[z].trailPoints.length > 1000) bodies[z].trailPoints.shift();
-  
-      // CREATE THE LINE
-      if(typeof bodies[z].line == 'object') scene.remove(bodies[z].line);
-      let line = new THREE.Line( new THREE.BufferGeometry().setFromPoints( bodies[z].trailPoints ), new THREE.LineBasicMaterial({color: 0xff00ff}));
-      line.material.color.set(bodies[z].material.color)
-      bodies[z].line = line;
-      scene.add(line);
-  
-    }
-  
-    camera.position.x -= controls.target.x - finalCameraPositionX / bodies.length //plane.position.x = pointLight.position.x = finalCameraPositionX / bodies.length;
-    camera.position.y -= controls.target.y - finalCameraPositionY / bodies.length//plane.position.y = pointLight.position.y = finalCameraPositionY / bodies.length;
-    camera.position.z -= controls.target.z - finalCameraPositionZ / bodies.length//plane.position.z = pointLight.position.z = finalCameraPositionZ / bodies.length;
-  
-    controls.target = new THREE.Vector3(finalCameraPositionX / bodies.length, finalCameraPositionY / bodies.length, finalCameraPositionZ / bodies.length);
-  
-      controls.update();
-  
-      renderer.render( scene, camera );
-  
-      requestAnimationFrame( animate );
-  
-    }
-  
-    animate();
-          
-    </script>
+
+      }
+
+      for(let z = 0; z < bodies.length; z++) {
+
+        bodies[z].motion.position.x += bodies[z].motion.velocity.x;
+        bodies[z].motion.position.y += bodies[z].motion.velocity.y;
+        bodies[z].motion.position.z += bodies[z].motion.velocity.z;
+
+      }   
+
+}
+
+for(let z = 0; z < bodies.length; z++) {
+
+  bodies[z].body.position.x = bodies[z].motion.position.x * constants.scale;
+  bodies[z].body.position.y = bodies[z].motion.position.y * constants.scale;
+  bodies[z].body.position.z = bodies[z].motion.position.z * constants.scale;
+
+}
+
+let finalCameraPositionX = 0;
+let finalCameraPositionY = 0;
+let finalCameraPositionZ = 0;
+
+for(let z = 0; z < bodies.length; z++) {
+
+  finalCameraPositionX += bodies[z].body.position.x;
+  finalCameraPositionY += bodies[z].body.position.y;
+  finalCameraPositionZ += bodies[z].body.position.z;
+
+  bodies[z].trailPoints.push(new THREE.Vector3(bodies[z].body.position.x, bodies[z].body.position.y, bodies[z].body.position.z));
+  if (bodies[z].trailPoints.length > 1000) bodies[z].trailPoints.shift();
+
+  // CREATE THE LINE
+  if(typeof bodies[z].line == 'object') scene.remove(bodies[z].line);
+  let line = new THREE.Line( new THREE.BufferGeometry().setFromPoints( bodies[z].trailPoints ), new THREE.LineBasicMaterial({color: 0xff00ff}));
+  line.material.color.set(bodies[z].body.material.color)
+  bodies[z].line = line;
+  scene.add(line);
+
+}
+
+camera.position.x -= controls.target.x - finalCameraPositionX / bodies.length //plane.position.x = pointLight.position.x = finalCameraPositionX / bodies.length;
+camera.position.y -= controls.target.y - finalCameraPositionY / bodies.length //plane.position.y = pointLight.position.y = finalCameraPositionY / bodies.length;
+camera.position.z -= controls.target.z - finalCameraPositionZ / bodies.length //plane.position.z = pointLight.position.z = finalCameraPositionZ / bodies.length;
+
+pointLight.position.x = finalCameraPositionX / bodies.length;
+pointLight.position.y = finalCameraPositionY / bodies.length;
+pointLight.position.z = finalCameraPositionZ / bodies.length;
+
+controls.target = new THREE.Vector3(finalCameraPositionX / bodies.length, finalCameraPositionY / bodies.length, finalCameraPositionZ / bodies.length);
+
+  controls.update();
+
+  renderer.render( scene, camera );
+
+  requestAnimationFrame( animate );
+
+}
+
+animate();
+      
+</script>
 </div>
       </div>
     </main><footer class="site-footer h-card">
