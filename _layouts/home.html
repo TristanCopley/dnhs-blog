@@ -10,6 +10,7 @@ layout: default
       z-index: -1;
       width: 10vw;
       height: 100vh;
+      
     
   }
 
@@ -95,189 +96,255 @@ layout: default
   
 	<script type="module" defer>
 
-import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r99/three.module.min.js';
-import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js';
-import * as dat from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
+    import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r99/three.module.min.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js';
+    import * as dat from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
+    
+    const gui = new dat.GUI()
 
-const gui = new dat.GUI()
+    let bodies = [];
+    
+    const constants = {
+    
+      timeSteps: 10,
+      timePerStep: 50,
+      gravity: 6.6743e-11,
+      scale: 0.00000000001,
+      AstronomicalObjectSizeMultiplier: 1,
+    
+    }
+    
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.01, 10000 );
+    camera.position.z = 200
+    
+    const renderer = new THREE.WebGLRenderer( );
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    document.body.appendChild( renderer.domElement );
+    
+    class AstronomicalObject {
+    
+      constructor(radius, mass, position, velocity) {
+    
+        const geometry = new THREE.SphereGeometry( radius * constants.scale * constants.AstronomicalObjectSizeMultiplier, 32, 16 );
+        const material = new THREE.MeshPhongMaterial( { color: 0xffffff } );
+        this.body = new THREE.Mesh( geometry, material );
+        bodies.push( this );
+        scene.add( this.body );
+        this.body.position.x = 0;
+        this.body.position.y = 0;
+        this.body.position.z = 0;
+        this.mass = mass;
+        this.trailPoints = [],
+        this.line = false;
+        this.motion = {
+    
+          position: new THREE.Vector3(0, 0, 0),
+    
+          velocity: new THREE.Vector3(0, 0, 0),
 
-
-let bodies = [];
-
-const constants = {
-
-  timeSteps: 100,
-  gravity: 6.6743e-11,
-  scale: 0.000000001,
-
-}
-
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 4000 );
-camera.position.z = 200
-
-const renderer = new THREE.WebGLRenderer( );
-renderer.setSize( window.innerWidth, window.innerHeight );
-document.body.appendChild( renderer.domElement );
-
-class AstronomicalObject {
-
-  constructor(radius, mass, position, velocity) {
-
-    const geometry = new THREE.SphereGeometry( radius * constants.scale, 32, 16 );
-    const material = new THREE.MeshPhongMaterial( { color: 0xffffff } );
-    this.body = new THREE.Mesh( geometry, material );
-    bodies.push( this );
-    scene.add( this.body );
-    this.body.position.x = 0;
-    this.body.position.y = 0;
-    this.body.position.z = 0;
-    this.mass = mass;
-    this.trailPoints = [],
-    this.line = false;
-    this.motion = {
-
-      position: {
-
-        x: 0,
-        y: 0,
-        z: 0 
-
-      },
-
-      velocity: {
-
-        x: 0,
-        y: 0,
-        z: 0 
-
+          acceleration: new THREE.Vector3(0, 0, 0)
+    
+        }
+    
+        if (position) this.motion.position = new THREE.Vector3(...position);
+        if (velocity) this.motion.velocity = new THREE.Vector3(...velocity);
+    
       }
+    
+    }
+    
+    let sun = new AstronomicalObject(6.95700e8, 1.989e30, [0, 0, 0], [0, 0, 0]);
+    sun.body.material.color.set('yellow');
 
+    let mercury = new AstronomicalObject(2440500, 3.3010e23, [68426000000, 0, 0], [0, 47360, 0]);
+    mercury.body.material.color.set('brown');
+
+    let venus = new AstronomicalObject(6051800, 4.8673e24, [107480000000, 0, 0], [0, 35020, 0]);
+    venus.body.material.color.set('orange');
+    
+    let earth = new AstronomicalObject(6371000, 5.972e24, [151000000000, 0, 0], [0, 29800, 0]);
+    earth.body.material.color.set('green');
+
+    /* let moon = new AstronomicalObject(1737400, 7.347e22, [151000000000 + 384399000, 0, 0], [0, 29800, 1022]);
+    moon.body.material.color.set('white'); */
+
+    let mars = new AstronomicalObject(3389500, 6.39e23, [213140000000, 0, 0], [0, 24070, 0]);
+    mars.body.material.color.set('red');
+
+    let jupiter = new AstronomicalObject(66854000, 1.89813e27, [741690000000, 0, 0], [0, 13060, 0]);
+    jupiter.body.material.color.set('pink');
+
+    let saturn = new AstronomicalObject(60268000, 5.6832e26, [1.4737e12, 0, 0], [0, 9680, 0]);
+    saturn.body.material.color.set('purple');
+
+    let uranus = new AstronomicalObject(25559000, 8.6811e25, [2.9444e+12, 0, 0], [0, 6800, 0]);
+    uranus.body.material.color.set('blue');
+
+    let neptune = new AstronomicalObject(24341000, 1.02409e26, [4.558857e12, 0, 0], [0, 5430, 0]);
+    neptune.body.material.color.set('magenta');
+
+    let pluto = new AstronomicalObject(1188000, 1.02409e26, [7.304326e12, 0, 0], [0, 3710, 0]);
+    pluto.body.material.color.set('white');
+
+    let skyboxGeo = new THREE.BoxGeometry(100000000000000 * constants.scale, 100000000000000 * constants.scale, 100000000000000 * constants.scale);
+    let skybox = new THREE.Mesh(skyboxGeo);
+    scene.add(skybox);
+
+    function createPathStrings(filename) {
+    const baseFilename = "https://tristancopley.github.io/dnhs-blog/images/skybox/";
+    const fileType = ".png";
+    const sides = ["front", "back", "top", "bottom", "right", "left"];
+    const pathStings = sides.map(side => {
+        return baseFilename + side + fileType;
+    });
+
+    return pathStings;
     }
 
-    if (position) this.motion.position = new THREE.Vector3(...position);
-    if (velocity) this.motion.velocity = new THREE.Vector3(...velocity);
+    let skyboxImage = "space";
+    function createMaterialArray(filename) {
+    const skyboxImagepaths = createPathStrings(filename);
+    const materialArray = skyboxImagepaths.map(image => {
+        let texture = new THREE.TextureLoader().load(image);
 
-  }
+        return new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide }); // <---
+    });
+    return materialArray;
+    }
 
-}
+    const materialArray = createMaterialArray(skyboxImage);
+    skyboxGeo = new THREE.BoxGeometry(10000, 10000, 10000);
+    skybox = new THREE.Mesh(skyboxGeo, materialArray);
+    scene.add(skybox);
 
-let sun = new AstronomicalObject(6.95700e8, 1.989e30, [0, 0, 0], [0, 0, 0]);
-sun.body.material.color.set('yellow');
+    let trails = [];
+    
+    renderer.shadowMap.enabled = true;
+    
+    const pointLight = new THREE.PointLight( 0xffffff, 3);
+    pointLight.position.x = 0;
+    pointLight.position.y = 0;
+    pointLight.position.z = 0;
+    pointLight.castShadows = true;
+    scene.add( pointLight );
+    
+    const aLight = new THREE.AmbientLight( 0xffffff, 0.8);
+    scene.add( aLight );
+    
+    const controls = new OrbitControls(camera, renderer.domElement);
+    
+    const constantsFolder = gui.addFolder('Constants');
+    constantsFolder.add(constants, 'timeSteps', 0, 300);
+    constantsFolder.add(constants, 'timePerStep', 0, 300);
+    constantsFolder.open();
+    
+    function animate() {
+    
+      for (let t = 0; t < constants.timeSteps ** 2; t++) {        
+    
+          if (constants.timeSteps === 0) continue;
+    
+          for(let x = 0; x < bodies.length; x++) {
+    
+              for(let y = x + 1; y < bodies.length; y++) {
+                  
+                let xDiff = bodies[x].motion.position.x - bodies[y].motion.position.x;
+                let yDiff = bodies[x].motion.position.y - bodies[y].motion.position.y;
+                let zDiff = bodies[x].motion.position.z - bodies[y].motion.position.z;
+    
+                let scalar = Math.sqrt((xDiff)**2 + (yDiff)**2 + (zDiff)**2) || 1;
+                let force = constants.gravity * (bodies[x].mass * bodies[y].mass) / (scalar**2);
+    
+                bodies[x].motion.acceleration.x -= (xDiff / scalar * force) / bodies[x].mass;
+                bodies[x].motion.acceleration.y -= (yDiff / scalar * force) / bodies[x].mass;
+                bodies[x].motion.acceleration.z -= (zDiff / scalar * force) / bodies[x].mass;
+    
+                bodies[y].motion.acceleration.x += (xDiff / scalar * force) / bodies[y].mass;
+                bodies[y].motion.acceleration.y += (yDiff / scalar * force) / bodies[y].mass;
+                bodies[y].motion.acceleration.z += (zDiff / scalar * force) / bodies[y].mass;
+    
+              }   
+    
+          }
+    
+          for(let z = 0; z < bodies.length; z++) {
+    
+            bodies[z].motion.velocity.x += bodies[z].motion.acceleration.x * constants.timePerStep;
+            bodies[z].motion.velocity.y += bodies[z].motion.acceleration.y * constants.timePerStep;
+            bodies[z].motion.velocity.z += bodies[z].motion.acceleration.z * constants.timePerStep;
 
-let earth = new AstronomicalObject(6371000, 5.972e24, [151000000000, 0, 0], [0, 29800, 0]);
-earth.body.material.color.set('green');
+            bodies[z].motion.position.x += bodies[z].motion.velocity.x * constants.timePerStep;
+            bodies[z].motion.position.y += bodies[z].motion.velocity.y * constants.timePerStep;
+            bodies[z].motion.position.z += bodies[z].motion.velocity.z * constants.timePerStep;
 
-let moon = new AstronomicalObject(1737400, 7.347e22, [151000000000 + 384399000, 0, 0], [0, 29800 + 1022, 0])
+            bodies[z].motion.acceleration = new THREE.Vector3(0, 0, 0);
+    
+          }
+    
+    }
+    
+    for(let z = 0; z < bodies.length; z++) {
+    
+      bodies[z].body.position.x = bodies[z].motion.position.x * constants.scale;
+      bodies[z].body.position.y = bodies[z].motion.position.y * constants.scale;
+      bodies[z].body.position.z = bodies[z].motion.position.z * constants.scale;
+    
+    }
+    
+    let cameraLock = {
 
-let trails = [];
+        x: 0,
+        y: 0,
+        z: 0
 
-renderer.shadowMap.enabled = true;
+    };
 
-const pointLight = new THREE.PointLight( 0xffffff, 3);
-pointLight.position.x = 0;
-pointLight.position.y = 0;
-pointLight.position.z = 0;
-pointLight.castShadows = true;
-scene.add( pointLight );
+    cameraLock = sun.body.position;
+    
+    for(let z = 0; z < bodies.length; z++) {
+    
+      /* finalCameraPositionX += bodies[z].body.position.x;
+      finalCameraPositionY += bodies[z].body.position.y;
+      finalCameraPositionZ += bodies[z].body.position.z; */
+        
+      if (constants.timeSteps > 0) {
 
-const aLight = new THREE.AmbientLight( 0xffffff, 0.8);
-scene.add( aLight );
-
-const controls = new OrbitControls(camera, renderer.domElement);
-
-const constantsFolder = gui.addFolder('Constants');
-constantsFolder.add(constants, 'timeSteps', 0, 10000);
-constantsFolder.open();
-
-function animate() {
-
-  for (let t = 0; t < constants.timeSteps; t++) {        
-
-      if (constants.timeSteps === 0) continue;
-
-      for(let x = 0; x < bodies.length; x++) {
-
-          for(let y = x + 1; y < bodies.length; y++) {
-              
-            let xDiff = bodies[x].motion.position.x-bodies[y].motion.position.x;
-            let yDiff = bodies[x].motion.position.y-bodies[y].motion.position.y;
-            let zDiff = bodies[x].motion.position.z-bodies[y].motion.position.z;
-
-            let scalar = Math.sqrt((xDiff)**2 + (yDiff)**2 + (zDiff)**2) || 1;
-            let force = constants.gravity * (bodies[x].mass * bodies[y].mass) / (scalar**2);
-
-            bodies[x].motion.velocity.x -= (xDiff / scalar * force) / bodies[x].mass;
-            bodies[x].motion.velocity.y -= (yDiff / scalar * force) / bodies[x].mass;
-            bodies[x].motion.velocity.z -= (zDiff / scalar * force) / bodies[x].mass;
-
-            bodies[y].motion.velocity.x += (xDiff / scalar * force) / bodies[y].mass;
-            bodies[y].motion.velocity.y += (yDiff / scalar * force) / bodies[y].mass;
-            bodies[y].motion.velocity.z += (zDiff / scalar * force) / bodies[y].mass;
-
-          }   
+        bodies[z].trailPoints.push(new THREE.Vector3(bodies[z].body.position.x, bodies[z].body.position.y, bodies[z].body.position.z));
+        if (bodies[z].trailPoints.length > 1000) bodies[z].trailPoints.shift();
+    
+        // CREATE THE LINE
+        if(typeof bodies[z].line == 'object') scene.remove(bodies[z].line);
+        let line = new THREE.Line( new THREE.BufferGeometry().setFromPoints( bodies[z].trailPoints ), new THREE.LineBasicMaterial({color: 0xff00ff}));
+        line.material.color.set(bodies[z].body.material.color)
+        bodies[z].line = line;
+        scene.add(line);
 
       }
+    
+    }
+    
+    camera.position.x -= controls.target.x - cameraLock.x;
+    camera.position.y -= controls.target.y - cameraLock.y;
+    camera.position.z -= controls.target.z - cameraLock.z;
+    
+    pointLight.position.x = cameraLock.x;
+    pointLight.position.y = cameraLock.y;
+    pointLight.position.z = cameraLock.z;
+    
+    controls.target = new THREE.Vector3(cameraLock.x, cameraLock.y, cameraLock.z);
+    
+      controls.update();
+    
+      renderer.render( scene, camera );
+    
+      requestAnimationFrame( animate );
+    
+    }
+    
+    animate();
 
-      for(let z = 0; z < bodies.length; z++) {
-
-        bodies[z].motion.position.x += bodies[z].motion.velocity.x;
-        bodies[z].motion.position.y += bodies[z].motion.velocity.y;
-        bodies[z].motion.position.z += bodies[z].motion.velocity.z;
-
-      }   
-
-}
-
-for(let z = 0; z < bodies.length; z++) {
-
-  bodies[z].body.position.x = bodies[z].motion.position.x * constants.scale;
-  bodies[z].body.position.y = bodies[z].motion.position.y * constants.scale;
-  bodies[z].body.position.z = bodies[z].motion.position.z * constants.scale;
-
-}
-
-let finalCameraPositionX = 0;
-let finalCameraPositionY = 0;
-let finalCameraPositionZ = 0;
-
-for(let z = 0; z < bodies.length; z++) {
-
-  finalCameraPositionX += bodies[z].body.position.x;
-  finalCameraPositionY += bodies[z].body.position.y;
-  finalCameraPositionZ += bodies[z].body.position.z;
-
-  bodies[z].trailPoints.push(new THREE.Vector3(bodies[z].body.position.x, bodies[z].body.position.y, bodies[z].body.position.z));
-  if (bodies[z].trailPoints.length > 1000) bodies[z].trailPoints.shift();
-
-  // CREATE THE LINE
-  if(typeof bodies[z].line == 'object') scene.remove(bodies[z].line);
-  let line = new THREE.Line( new THREE.BufferGeometry().setFromPoints( bodies[z].trailPoints ), new THREE.LineBasicMaterial({color: 0xff00ff}));
-  line.material.color.set(bodies[z].body.material.color)
-  bodies[z].line = line;
-  scene.add(line);
-
-}
-
-camera.position.x -= controls.target.x - finalCameraPositionX / bodies.length //plane.position.x = pointLight.position.x = finalCameraPositionX / bodies.length;
-camera.position.y -= controls.target.y - finalCameraPositionY / bodies.length //plane.position.y = pointLight.position.y = finalCameraPositionY / bodies.length;
-camera.position.z -= controls.target.z - finalCameraPositionZ / bodies.length //plane.position.z = pointLight.position.z = finalCameraPositionZ / bodies.length;
-
-pointLight.position.x = finalCameraPositionX / bodies.length;
-pointLight.position.y = finalCameraPositionY / bodies.length;
-pointLight.position.z = finalCameraPositionZ / bodies.length;
-
-controls.target = new THREE.Vector3(finalCameraPositionX / bodies.length, finalCameraPositionY / bodies.length, finalCameraPositionZ / bodies.length);
-
-  controls.update();
-
-  renderer.render( scene, camera );
-
-  requestAnimationFrame( animate );
-
-}
-
-animate();
-      
-</script>
+    // I hate javascript!
+          
+    </script>
 </div>
