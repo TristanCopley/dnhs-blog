@@ -94,7 +94,28 @@ layout: default
 
   {%- endif -%}
   
-	<script type="module" defer>
+	<!-- canvas {
+
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: -1;
+
+  }
+
+  #text {
+
+    z-index: 1;
+    pointer-events: none;
+
+  }
+  
+  </style>
+</head>
+<body> -->
+  <canvas id="text"></canvas>
+  <script type="module" defer>
 
     import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r99/three.module.min.js';
     import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js';
@@ -103,16 +124,22 @@ layout: default
     const gui = new dat.GUI()
 
     let bodies = [];
+
+    let vector = new THREE.Vector3();
     
     const constants = {
     
       timeSteps: 10,
       timePerStep: 50,
       gravity: 6.6743e-11,
-      scale: 0.00000000001,
+      scale: 0.0000000001,
       AstronomicalObjectSizeMultiplier: 1,
+      ObjectToTrack: undefined
     
     }
+
+    let textCanvas = document.getElementById('text');
+    let textctx = textCanvas.getContext('2d');
     
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.01, 10000 );
@@ -121,17 +148,31 @@ layout: default
     const renderer = new THREE.WebGLRenderer( );
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
+
+    window.addEventListener( 'resize', onWindowResize, false );
+
+    function onWindowResize(){
+
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
+
+    }
     
+    let canvas = renderer.domElement;
     class AstronomicalObject {
     
-      constructor(radius, mass, position, velocity) {
+      constructor(name, radius, mass, position, velocity) {
     
-        const geometry = new THREE.SphereGeometry( radius * constants.scale * constants.AstronomicalObjectSizeMultiplier, 32, 16 );
+        const geometry = new THREE.SphereGeometry( radius * constants.scale * constants.AstronomicalObjectSizeMultiplier, 32, 32 );
         const material = new THREE.MeshPhongMaterial( { color: 0xffffff } );
         this.body = new THREE.Mesh( geometry, material );
         bodies.push( this );
         scene.add( this.body );
+        this.body.radius = radius * constants.scale * constants.AstronomicalObjectSizeMultiplier;
         this.body.position.x = 0;
+        this.name = name;
         this.body.position.y = 0;
         this.body.position.z = 0;
         this.mass = mass;
@@ -153,69 +194,86 @@ layout: default
       }
     
     }
+
+    function distance(vector1, vector2) {
+
+      let xDiff = bodies[x].motion.position.x - bodies[y].motion.position.x;
+      let yDiff = bodies[x].motion.position.y - bodies[y].motion.position.y;
+      let zDiff = bodies[x].motion.position.z - bodies[y].motion.position.z;
+
+      let scalar = Math.sqrt((xDiff)**2 + (yDiff)**2 + (zDiff)**2) || 0;
+
+    }
     
-    let sun = new AstronomicalObject(6.95700e8, 1.989e30, [0, 0, 0], [0, 0, 0]);
+    let sun = new AstronomicalObject('Sun', 6.95700e8, 1.989e30, [0, 0, 0], [0, 0, 0]);
     sun.body.material.color.set('yellow');
 
-    let mercury = new AstronomicalObject(2440500, 3.3010e23, [68426000000, 0, 0], [0, 47360, 0]);
+    let mercury = new AstronomicalObject('Mercury', 2440500, 3.3010e23, [68426000000, 0, 0], [0, 47360, 0]);
     mercury.body.material.color.set('brown');
 
-    let venus = new AstronomicalObject(6051800, 4.8673e24, [107480000000, 0, 0], [0, 35020, 0]);
+    let venus = new AstronomicalObject('Venus', 6051800, 4.8673e24, [107480000000, 0, 0], [0, 35020, 0]);
     venus.body.material.color.set('orange');
     
-    let earth = new AstronomicalObject(6371000, 5.972e24, [151000000000, 0, 0], [0, 29800, 0]);
+    let earth = new AstronomicalObject('Earth', 6371000, 5.972e24, [151000000000, 0, 0], [0, 29800, 0]);
     earth.body.material.color.set('green');
 
-    /* let moon = new AstronomicalObject(1737400, 7.347e22, [151000000000 + 384399000, 0, 0], [0, 29800, 1022]);
-    moon.body.material.color.set('white'); */
+    // let moon = new AstronomicalObject(1737400, 7.347e22, [151000000000 + 384399000, 0, 0], [0, 29800, 1022]);
+    // moon.body.material.color.set('white');
 
-    let mars = new AstronomicalObject(3389500, 6.39e23, [213140000000, 0, 0], [0, 24070, 0]);
+    let mars = new AstronomicalObject('Mars', 3389500, 6.39e23, [213140000000, 0, 0], [0, 24070, 0]);
     mars.body.material.color.set('red');
 
-    let jupiter = new AstronomicalObject(66854000, 1.89813e27, [741690000000, 0, 0], [0, 13060, 0]);
+    let jupiter = new AstronomicalObject('Jupiter', 66854000, 1.89813e27, [741690000000, 0, 0], [0, 13060, 0]);
     jupiter.body.material.color.set('pink');
 
-    let saturn = new AstronomicalObject(60268000, 5.6832e26, [1.4737e12, 0, 0], [0, 9680, 0]);
+    let saturn = new AstronomicalObject('Saturn', 60268000, 5.6832e26, [1.4737e12, 0, 0], [0, 9680, 0]);
     saturn.body.material.color.set('purple');
 
-    let uranus = new AstronomicalObject(25559000, 8.6811e25, [2.9444e+12, 0, 0], [0, 6800, 0]);
+    let uranus = new AstronomicalObject('Uranus', 25559000, 8.6811e25, [2.9444e+12, 0, 0], [0, 6800, 0]);
     uranus.body.material.color.set('blue');
 
-    let neptune = new AstronomicalObject(24341000, 1.02409e26, [4.558857e12, 0, 0], [0, 5430, 0]);
+    let neptune = new AstronomicalObject('Neptune', 24341000, 1.02409e26, [4.558857e12, 0, 0], [0, 5430, 0]);
     neptune.body.material.color.set('magenta');
 
-    let pluto = new AstronomicalObject(1188000, 1.02409e26, [7.304326e12, 0, 0], [0, 3710, 0]);
+    let pluto = new AstronomicalObject('Pluto', 1188000, 1.02409e26, [7.304326e12, 0, 0], [0, 3710, 0]);
     pluto.body.material.color.set('white');
 
-    let skyboxGeo = new THREE.BoxGeometry(100000000000000 * constants.scale, 100000000000000 * constants.scale, 100000000000000 * constants.scale);
-    let skybox = new THREE.Mesh(skyboxGeo);
-    scene.add(skybox);
+    // WHICH OBJECT TO TRACK
+    constants.ObjectToTrack = sun;
 
     function createPathStrings(filename) {
     const baseFilename = "https://tristancopley.github.io/dnhs-blog/images/skybox/";
     const fileType = ".png";
-    const sides = ["front", "back", "top", "bottom", "right", "left"];
+    const sides = ["right", "left", "top", "bottom", "front", "back"];
+
     const pathStings = sides.map(side => {
+
         return baseFilename + side + fileType;
+
     });
 
     return pathStings;
+
     }
 
     let skyboxImage = "space";
     function createMaterialArray(filename) {
     const skyboxImagepaths = createPathStrings(filename);
     const materialArray = skyboxImagepaths.map(image => {
+
         let texture = new THREE.TextureLoader().load(image);
 
-        return new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide }); // <---
+        return new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide });
+
     });
+
     return materialArray;
+
     }
 
     const materialArray = createMaterialArray(skyboxImage);
-    skyboxGeo = new THREE.BoxGeometry(10000, 10000, 10000);
-    skybox = new THREE.Mesh(skyboxGeo, materialArray);
+    let skyboxGeo = new THREE.BoxGeometry(50000000000000 * constants.scale, 50000000000000 * constants.scale, 50000000000000 * constants.scale);
+    let skybox = new THREE.Mesh(skyboxGeo, materialArray);
     scene.add(skybox);
 
     let trails = [];
@@ -236,7 +294,7 @@ layout: default
     
     const constantsFolder = gui.addFolder('Constants');
     constantsFolder.add(constants, 'timeSteps', 0, 300);
-    constantsFolder.add(constants, 'timePerStep', 0, 300);
+    constantsFolder.add(constants, 'timePerStep', 0, 1000);
     constantsFolder.open();
     
     function animate() {
@@ -300,11 +358,15 @@ layout: default
 
       };
 
-      cameraLock = sun.body.position;
-      
-      for(let z = 0; z < bodies.length; z++) {
-          
-        if (constants.timeSteps > 0) {
+    cameraLock = sun.body.position;
+    
+    for(let z = 0; z < bodies.length; z++) {
+    
+      /* finalCameraPositionX += bodies[z].body.position.x;
+      finalCameraPositionY += bodies[z].body.position.y;
+      finalCameraPositionZ += bodies[z].body.position.z; */
+        
+      if (constants.timeSteps > 0) {
 
           bodies[z].trailPoints.push(new THREE.Vector3(bodies[z].body.position.x, bodies[z].body.position.y, bodies[z].body.position.z));
           if (bodies[z].trailPoints.length > 1000) bodies[z].trailPoints.shift();
@@ -331,11 +393,39 @@ layout: default
       controls.target = new THREE.Vector3(cameraLock.x, cameraLock.y, cameraLock.z);
     
       controls.update();
+
+      camera.near = 
+      camera.far =
+
+      skybox.position.x = camera.position.x;
+      skybox.position.y = camera.position.y;
+      skybox.position.z = camera.position.z;
+
+      textCanvas.width = canvas.width;
+      textCanvas.height = canvas.height;
+
+      textctx.font = "12px Courier New";
+      textctx.fillStyle = "white";
+
+      for(let z = 0; z < bodies.length; z++) {
+
+        vector.set( bodies[z].body.position.x + bodies[z].body.radius, bodies[z].body.position.y + bodies[z].body.radius, bodies[z].body.position.z + bodies[z].body.radius);
+
+        // map to normalized device coordinate (NDC) space
+        vector.project( camera );
+
+        // map to 2D screen space
+        vector.x = Math.round( (   vector.x + 1 ) * canvas.width  / 2 );
+        vector.y = Math.round( ( - vector.y + 1 ) * canvas.height / 2 );
+
+        if(vector.z < 1) textctx.fillText(bodies[z].name, vector.x, vector.y);
+      
+      }
     
       renderer.render( scene, camera );
     
       requestAnimationFrame( animate );
-    
+
     }
     
     animate();
