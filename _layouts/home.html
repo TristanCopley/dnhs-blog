@@ -129,14 +129,17 @@ layout: default
     
     const constants = {
     
-      timeSteps: 10,
-      timePerStep: 50,
+      timeSteps: 1,
+      timePerStep: 8760 * 21.56,
       gravity: 6.6743e-11,
       scale: 0.0000000001,
       AstronomicalObjectSizeMultiplier: 1,
       ObjectToTrack: undefined
     
     }
+
+    let dt = 0;
+    let oldTime = Date.now();
 
     let textCanvas = document.getElementById('text');
     let textctx = textCanvas.getContext('2d');
@@ -181,9 +184,7 @@ layout: default
         this.motion = {
     
           position: new THREE.Vector3(0, 0, 0),
-    
           velocity: new THREE.Vector3(0, 0, 0),
-
           acceleration: new THREE.Vector3(0, 0, 0)
     
         }
@@ -214,7 +215,7 @@ layout: default
     let venus = new AstronomicalObject('Venus', 6051800, 4.8673e24, [107480000000, 0, 0], [0, 35020, 0]);
     venus.body.material.color.set('orange');
     
-    let earth = new AstronomicalObject('Earth', 6371000, 5.972e24, [151000000000, 0, 0], [0, 29800, 0]);
+    let earth = new AstronomicalObject('Earth', 6371000, 5.972e24, [151000000000, 0, 0], [0, 2.978589e4, 0]);
     earth.body.material.color.set('green');
 
     // let moon = new AstronomicalObject(1737400, 7.347e22, [151000000000 + 384399000, 0, 0], [0, 29800, 1022]);
@@ -294,7 +295,7 @@ layout: default
     
     const constantsFolder = gui.addFolder('Constants');
     constantsFolder.add(constants, 'timeSteps', 0, 300);
-    constantsFolder.add(constants, 'timePerStep', 0, 1000);
+    constantsFolder.add(constants, 'timePerStep', 0, 100000);
     constantsFolder.open();
     
     function animate() {
@@ -359,28 +360,28 @@ layout: default
       };
 
     cameraLock = sun.body.position;
-    
+
     for(let z = 0; z < bodies.length; z++) {
     
-      /* finalCameraPositionX += bodies[z].body.position.x;
-      finalCameraPositionY += bodies[z].body.position.y;
-      finalCameraPositionZ += bodies[z].body.position.z; */
-        
-      if (constants.timeSteps > 0) {
-
-          bodies[z].trailPoints.push(new THREE.Vector3(bodies[z].body.position.x, bodies[z].body.position.y, bodies[z].body.position.z));
-          if (bodies[z].trailPoints.length > 1000) bodies[z].trailPoints.shift();
+    /* finalCameraPositionX += bodies[z].body.position.x;
+    finalCameraPositionY += bodies[z].body.position.y;
+    finalCameraPositionZ += bodies[z].body.position.z; */
       
-          // CREATE THE LINE
-          if(typeof bodies[z].line == 'object') scene.remove(bodies[z].line);
-          let line = new THREE.Line( new THREE.BufferGeometry().setFromPoints( bodies[z].trailPoints ), new THREE.LineBasicMaterial({color: 0xff00ff}));
-          line.material.color.set(bodies[z].body.material.color)
-          bodies[z].line = line;
-          scene.add(line);
+    if (constants.timeSteps > 0) {
 
-        }
-      
+        bodies[z].trailPoints.push(new THREE.Vector3(bodies[z].body.position.x, bodies[z].body.position.y, bodies[z].body.position.z));
+        if (bodies[z].trailPoints.length > 1000) bodies[z].trailPoints.shift();
+    
+        // CREATE THE LINE
+        if(typeof bodies[z].line == 'object') scene.remove(bodies[z].line);
+        let line = new THREE.Line( new THREE.BufferGeometry().setFromPoints( bodies[z].trailPoints ), new THREE.LineBasicMaterial({color: 0xff00ff}));
+        line.material.color.set(bodies[z].body.material.color)
+        bodies[z].line = line;
+        scene.add(line);
+
       }
+    
+    }
       
       camera.position.x -= controls.target.x - cameraLock.x;
       camera.position.y -= controls.target.y - cameraLock.y;
@@ -394,8 +395,8 @@ layout: default
     
       controls.update();
 
-      camera.near = 
-      camera.far =
+      /* camera.near = 0
+      camera.far = 0; */
 
       skybox.position.x = camera.position.x;
       skybox.position.y = camera.position.y;
@@ -421,6 +422,11 @@ layout: default
         if(vector.z < 1) textctx.fillText(bodies[z].name, vector.x, vector.y);
       
       }
+
+      dt = Date.now() - oldTime;
+      oldTime = Date.now();
+
+      console.log(dt);
     
       renderer.render( scene, camera );
     
