@@ -266,73 +266,69 @@ layout: default
     
               }   
     
-          }
-    
-          for(let z = 0; z < bodies.length; z++) {
-    
-            bodies[z].motion.velocity.x += bodies[z].motion.acceleration.x * constants.timePerStep;
-            bodies[z].motion.velocity.y += bodies[z].motion.acceleration.y * constants.timePerStep;
-            bodies[z].motion.velocity.z += bodies[z].motion.acceleration.z * constants.timePerStep;
+            }
+      
+            for(let z = 0; z < bodies.length; z++) {
+      
+              bodies[z].motion.velocity.x += bodies[z].motion.acceleration.x * constants.timePerStep;
+              bodies[z].motion.velocity.y += bodies[z].motion.acceleration.y * constants.timePerStep;
+              bodies[z].motion.velocity.z += bodies[z].motion.acceleration.z * constants.timePerStep;
 
-            bodies[z].motion.position.x += bodies[z].motion.velocity.x * constants.timePerStep;
-            bodies[z].motion.position.y += bodies[z].motion.velocity.y * constants.timePerStep;
-            bodies[z].motion.position.z += bodies[z].motion.velocity.z * constants.timePerStep;
+              bodies[z].motion.position.x += bodies[z].motion.velocity.x * constants.timePerStep;
+              bodies[z].motion.position.y += bodies[z].motion.velocity.y * constants.timePerStep;
+              bodies[z].motion.position.z += bodies[z].motion.velocity.z * constants.timePerStep;
 
-            bodies[z].motion.acceleration = new THREE.Vector3(0, 0, 0);
-    
-          }
-    
-    }
-    
-    for(let z = 0; z < bodies.length; z++) {
-    
-      bodies[z].body.position.x = bodies[z].motion.position.x * constants.scale;
-      bodies[z].body.position.y = bodies[z].motion.position.y * constants.scale;
-      bodies[z].body.position.z = bodies[z].motion.position.z * constants.scale;
-    
-    }
-    
-    let cameraLock = {
-
-        x: 0,
-        y: 0,
-        z: 0
-
-    };
-
-    cameraLock = sun.body.position;
-    
-    for(let z = 0; z < bodies.length; z++) {
-    
-      /* finalCameraPositionX += bodies[z].body.position.x;
-      finalCameraPositionY += bodies[z].body.position.y;
-      finalCameraPositionZ += bodies[z].body.position.z; */
-        
-      if (constants.timeSteps > 0) {
-
-        bodies[z].trailPoints.push(new THREE.Vector3(bodies[z].body.position.x, bodies[z].body.position.y, bodies[z].body.position.z));
-        if (bodies[z].trailPoints.length > 1000) bodies[z].trailPoints.shift();
-    
-        // CREATE THE LINE
-        if(typeof bodies[z].line == 'object') scene.remove(bodies[z].line);
-        let line = new THREE.Line( new THREE.BufferGeometry().setFromPoints( bodies[z].trailPoints ), new THREE.LineBasicMaterial({color: 0xff00ff}));
-        line.material.color.set(bodies[z].body.material.color)
-        bodies[z].line = line;
-        scene.add(line);
-
+              bodies[z].motion.acceleration = new THREE.Vector3(0, 0, 0);
+      
+            }
+      
       }
-    
-    }
-    
-    camera.position.x -= controls.target.x - cameraLock.x;
-    camera.position.y -= controls.target.y - cameraLock.y;
-    camera.position.z -= controls.target.z - cameraLock.z;
-    
-    pointLight.position.x = cameraLock.x;
-    pointLight.position.y = cameraLock.y;
-    pointLight.position.z = cameraLock.z;
-    
-    controls.target = new THREE.Vector3(cameraLock.x, cameraLock.y, cameraLock.z);
+      
+      for(let z = 0; z < bodies.length; z++) {
+      
+        bodies[z].body.position.x = bodies[z].motion.position.x * constants.scale;
+        bodies[z].body.position.y = bodies[z].motion.position.y * constants.scale;
+        bodies[z].body.position.z = bodies[z].motion.position.z * constants.scale;
+      
+      }
+      
+      let cameraLock = {
+
+          x: 0,
+          y: 0,
+          z: 0
+
+      };
+
+      cameraLock = sun.body.position;
+      
+      for(let z = 0; z < bodies.length; z++) {
+          
+        if (constants.timeSteps > 0) {
+
+          bodies[z].trailPoints.push(new THREE.Vector3(bodies[z].body.position.x, bodies[z].body.position.y, bodies[z].body.position.z));
+          if (bodies[z].trailPoints.length > 1000) bodies[z].trailPoints.shift();
+      
+          // CREATE THE LINE
+          if(typeof bodies[z].line == 'object') scene.remove(bodies[z].line);
+          let line = new THREE.Line( new THREE.BufferGeometry().setFromPoints( bodies[z].trailPoints ), new THREE.LineBasicMaterial({color: 0xff00ff}));
+          line.material.color.set(bodies[z].body.material.color)
+          bodies[z].line = line;
+          scene.add(line);
+
+        }
+      
+      }
+      
+      camera.position.x -= controls.target.x - cameraLock.x;
+      camera.position.y -= controls.target.y - cameraLock.y;
+      camera.position.z -= controls.target.z - cameraLock.z;
+      
+      pointLight.position.x = cameraLock.x;
+      pointLight.position.y = cameraLock.y;
+      pointLight.position.z = cameraLock.z;
+      
+      controls.target = new THREE.Vector3(cameraLock.x, cameraLock.y, cameraLock.z);
     
       controls.update();
     
