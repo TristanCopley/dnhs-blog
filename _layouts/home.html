@@ -6,12 +6,19 @@ layout: default
 
   canvas {
 
-      position: fixed;
-      z-index: -1;
-      width: 10vw;
-      height: 100vh;
-      
-    
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: -1;
+
+  }
+
+  #text {
+
+    z-index: 1;
+    pointer-events: none;
+
   }
 
 </style>
@@ -93,27 +100,6 @@ layout: default
     {%- endif %}
 
   {%- endif -%}
-  
-	<!-- canvas {
-
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    z-index: -1;
-
-  }
-
-  #text {
-
-    z-index: 1;
-    pointer-events: none;
-
-  }
-  
-  </style>
-</head>
-<body> -->
   <canvas id="text"></canvas>
   <script type="module" defer>
 
@@ -123,6 +109,32 @@ layout: default
     
     const gui = new dat.GUI()
 
+    function rotateVector(vector, tx, ty, tz) {
+
+      let nVec = new THREE.Vector3(vector.x, vector.y, vector.z)
+
+      // Z rotation\
+      let tempX = nVec.x;
+      nVec.x = nVec.x * Math.cos(tz) - nVec.y * Math.sin(tz);
+      nVec.y = tempX * Math.sin(tz) + nVec.y * Math.cos(tz);
+      // Z
+
+      // Y rotation
+      tempX = nVec.x;
+      nVec.x = nVec.x * Math.cos(ty) + nVec.z * Math.sin(ty);
+      // Y
+      nVec.z = -tempX * Math.sin(ty) + nVec.z * Math.cos(ty);
+
+      // X rotation
+      // X
+      let tempY = nVec.y;
+      nVec.y = nVec.y * Math.cos(tx) - nVec.z * Math.sin(tx);
+      nVec.z = tempY * Math.sin(tx) + nVec.z * Math.cos(tx);
+
+      return nVec;
+
+    }
+
     let bodies = [];
 
     let vector = new THREE.Vector3();
@@ -130,7 +142,7 @@ layout: default
     const constants = {
     
       timeSteps: 1,
-      timePerStep: 8760 * 21.56,
+      timePerStep: 0,//40000, // in seconds
       gravity: 6.6743e-11,
       scale: 0.0000000001,
       AstronomicalObjectSizeMultiplier: 1,
@@ -140,6 +152,8 @@ layout: default
 
     let dt = 0;
     let oldTime = Date.now();
+
+    let simulationTime = 946684800000; // Y2K
 
     let textCanvas = document.getElementById('text');
     let textctx = textCanvas.getContext('2d');
@@ -211,33 +225,51 @@ layout: default
 
     let mercury = new AstronomicalObject('Mercury', 2440500, 3.3010e23, [68426000000, 0, 0], [0, 47360, 0]);
     mercury.body.material.color.set('brown');
+    mercury.motion.position = rotateVector(mercury.motion.position, 0, 0, 245.5 * Math.PI / 180);
+    mercury.motion.velocity = rotateVector(mercury.motion.velocity, 0, 7.005 * Math.PI / 180, 245.5 * Math.PI / 180);
 
     let venus = new AstronomicalObject('Venus', 6051800, 4.8673e24, [107480000000, 0, 0], [0, 35020, 0]);
     venus.body.material.color.set('orange');
+    venus.motion.position = rotateVector(venus.motion.position, 0, 0, 182 * Math.PI / 180);
+    venus.motion.velocity = rotateVector(venus.motion.velocity, 0, 3.3947 * Math.PI / 180, 182 * Math.PI / 180);
     
-    let earth = new AstronomicalObject('Earth', 6371000, 5.972e24, [151000000000, 0, 0], [0, 2.978589e4, 0]);
+    let earth = new AstronomicalObject('Earth', 6371000, 5.972e24, [151000000000, 0, 0], [0, 2.978589e4, 0]); //m/s  
     earth.body.material.color.set('green');
+    earth.motion.position = rotateVector(earth.motion.position, 0, 0, 109 * Math.PI / 180);
+    earth.motion.velocity = rotateVector(earth.motion.velocity, 0, 0, 109 * Math.PI / 180);
 
     // let moon = new AstronomicalObject(1737400, 7.347e22, [151000000000 + 384399000, 0, 0], [0, 29800, 1022]);
     // moon.body.material.color.set('white');
 
     let mars = new AstronomicalObject('Mars', 3389500, 6.39e23, [213140000000, 0, 0], [0, 24070, 0]);
     mars.body.material.color.set('red');
+    mars.motion.position = rotateVector(mars.motion.position, 0, 0, -1 * Math.PI / 180);
+    mars.motion.velocity = rotateVector(mars.motion.velocity, 0, 1.851 * Math.PI / 180, -1 * Math.PI / 180);
 
     let jupiter = new AstronomicalObject('Jupiter', 66854000, 1.89813e27, [741690000000, 0, 0], [0, 13060, 0]);
     jupiter.body.material.color.set('pink');
+    jupiter.motion.position = rotateVector(jupiter.motion.position, 0, 0, 40 * Math.PI / 180);
+    jupiter.motion.velocity = rotateVector(jupiter.motion.velocity, 0, 1.305 * Math.PI / 180, 40 * Math.PI / 180);
 
     let saturn = new AstronomicalObject('Saturn', 60268000, 5.6832e26, [1.4737e12, 0, 0], [0, 9680, 0]);
     saturn.body.material.color.set('purple');
+    saturn.motion.position = rotateVector(saturn.motion.position, 0, 0, 50 * Math.PI / 180);
+    saturn.motion.velocity = rotateVector(saturn.motion.velocity, 0, 2.484 * Math.PI / 180, 50 * Math.PI / 180);
 
     let uranus = new AstronomicalObject('Uranus', 25559000, 8.6811e25, [2.9444e+12, 0, 0], [0, 6800, 0]);
     uranus.body.material.color.set('blue');
+    uranus.motion.position = rotateVector(uranus.motion.position, 0, 0, 325 * Math.PI / 180);
+    uranus.motion.velocity = rotateVector(uranus.motion.velocity, 0, 0.770 * Math.PI / 180, 325 * Math.PI / 180);
 
     let neptune = new AstronomicalObject('Neptune', 24341000, 1.02409e26, [4.558857e12, 0, 0], [0, 5430, 0]);
     neptune.body.material.color.set('magenta');
+    neptune.motion.position = rotateVector(neptune.motion.position, 0, 0, 315 * Math.PI / 180);
+    neptune.motion.velocity = rotateVector(neptune.motion.velocity, 0, 1.769 * Math.PI / 180, 315 * Math.PI / 180);
 
     let pluto = new AstronomicalObject('Pluto', 1188000, 1.02409e26, [7.304326e12, 0, 0], [0, 3710, 0]);
     pluto.body.material.color.set('white');
+    pluto.motion.position = rotateVector(pluto.motion.position, 0, 0, 270 * Math.PI / 180);
+    pluto.motion.velocity = rotateVector(pluto.motion.velocity, 0, 17.14 * Math.PI / 180, 270 * Math.PI / 180);
 
     // WHICH OBJECT TO TRACK
     constants.ObjectToTrack = sun;
@@ -426,8 +458,12 @@ layout: default
       dt = Date.now() - oldTime;
       oldTime = Date.now();
 
-      console.log(dt);
+      console.log(1000 / dt);
+
+      simulationTime += (constants.timePerStep * constants.timeSteps ** 2) * 1000;
     
+      console.log(new Date(simulationTime))
+
       renderer.render( scene, camera );
     
       requestAnimationFrame( animate );
@@ -435,8 +471,6 @@ layout: default
     }
     
     animate();
-
-    // I hate javascript!
           
     </script>
 </div>
