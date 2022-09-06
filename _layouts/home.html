@@ -142,13 +142,16 @@ layout: default
     const constants = {
     
       timeSteps: 1,
-      timePerStep: 0,//40000, // in seconds
+      timePerStep: 0, //40000, // in seconds
+      c: 0, // / fps
       gravity: 6.6743e-11,
       scale: 0.0000000001,
       AstronomicalObjectSizeMultiplier: 1,
       ObjectToTrack: undefined
     
     }
+
+    let dummyCamera = new THREE.Vector3(0,0,200);
 
     let dt = 0;
     let oldTime = Date.now();
@@ -324,13 +327,22 @@ layout: default
     scene.add( aLight );
     
     const controls = new OrbitControls(camera, renderer.domElement);
+
+    controls.autoRotate = true;
     
     const constantsFolder = gui.addFolder('Constants');
-    constantsFolder.add(constants, 'timeSteps', 0, 300);
-    constantsFolder.add(constants, 'timePerStep', 0, 100000);
+    constantsFolder.add(constants, 'timeSteps', 0, 365);
+    constantsFolder.add(constants, 'timePerStep', 0, 86400);
     constantsFolder.open();
     
     function animate() {
+
+      dt = Date.now() - oldTime || 1;
+      oldTime = Date.now();
+
+      constants.simTimePerStep = constants.timePerStep / (1000 / (dt || 1));
+
+      simulationTime += (constants.simTimePerStep * constants.timeSteps ** 2) * 1000;
     
       for (let t = 0; t < constants.timeSteps ** 2; t++) {        
     
@@ -361,13 +373,13 @@ layout: default
       
             for(let z = 0; z < bodies.length; z++) {
       
-              bodies[z].motion.velocity.x += bodies[z].motion.acceleration.x * constants.timePerStep;
-              bodies[z].motion.velocity.y += bodies[z].motion.acceleration.y * constants.timePerStep;
-              bodies[z].motion.velocity.z += bodies[z].motion.acceleration.z * constants.timePerStep;
+              bodies[z].motion.velocity.x += bodies[z].motion.acceleration.x * constants.simTimePerStep;
+              bodies[z].motion.velocity.y += bodies[z].motion.acceleration.y * constants.simTimePerStep;
+              bodies[z].motion.velocity.z += bodies[z].motion.acceleration.z * constants.simTimePerStep;
 
-              bodies[z].motion.position.x += bodies[z].motion.velocity.x * constants.timePerStep;
-              bodies[z].motion.position.y += bodies[z].motion.velocity.y * constants.timePerStep;
-              bodies[z].motion.position.z += bodies[z].motion.velocity.z * constants.timePerStep;
+              bodies[z].motion.position.x += bodies[z].motion.velocity.x * constants.simTimePerStep;
+              bodies[z].motion.position.y += bodies[z].motion.velocity.y * constants.simTimePerStep;
+              bodies[z].motion.position.z += bodies[z].motion.velocity.z * constants.simTimePerStep;
 
               bodies[z].motion.acceleration = new THREE.Vector3(0, 0, 0);
       
@@ -424,7 +436,7 @@ layout: default
       pointLight.position.z = cameraLock.z;
       
       controls.target = new THREE.Vector3(cameraLock.x, cameraLock.y, cameraLock.z);
-    
+
       controls.update();
 
       /* camera.near = 0
@@ -455,14 +467,13 @@ layout: default
       
       }
 
-      dt = Date.now() - oldTime;
-      oldTime = Date.now();
+      textctx.font = "20px Courier New";
+      textctx.fillStyle = "white";
+      textctx.fillText(new Date(simulationTime), 20, 20);
 
-      console.log(1000 / dt);
-
-      simulationTime += (constants.timePerStep * constants.timeSteps ** 2) * 1000;
-    
-      console.log(new Date(simulationTime))
+      // Website mode
+      constants.timePerStep = Math.abs(Math.sin(Date.now()/10000) * 126400) + 40000;
+      constants.timeSteps = 10;
 
       renderer.render( scene, camera );
     
