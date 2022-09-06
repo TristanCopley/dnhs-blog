@@ -1,12 +1,12 @@
 ---
 toc: true
 layout: post
-description: Week 1 ticket
+description: Week 3 ticket
 categories: [markdown]
-title: 08/29 Ticket
+title: 09/06 Ticket
 ---
 
-# SCORED BY AKHIL 2.7 POINTS OF 3 | 2.7/3 FINAL SCORE
+# SCORED BY AKHIL 2.7+ POINTS OF 3 | 2.7/3 FINAL SCORE
 # Week 2 Using Objects
 ## Week 2 Requirements
 
@@ -15,12 +15,12 @@ title: 08/29 Ticket
  Tickets
 
 ### Code.org
-Java Using Objects and PBL design
-Extra!
-Code.org
-Unit 1 Take-aways
+- Java Using Objects and PBL design
+- Extra!
+- Code.org
 
-completion through lesson 15
+### Completion through lesson 15
+![](https://raw.githubusercontent.com/TristanCopley/dnhs-blog/bac3b902597ea8ee9e72e761ac6dcefdd6f35cc3/images/Screen%20Shot%202022-09-06%20at%2010.12.50%20AM.png)
 Java Using Objects and PBL design
 Build a Console GUI focused on Java Math Class: [LINK]()
 Extra!
