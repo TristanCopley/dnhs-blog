@@ -21,7 +21,10 @@ title: 09/06 Ticket
 
 ### Completion through lesson 15
 ![](https://raw.githubusercontent.com/TristanCopley/dnhs-blog/bac3b902597ea8ee9e72e761ac6dcefdd6f35cc3/images/Screen%20Shot%202022-09-06%20at%2010.12.50%20AM.png)
-Java Using Objects and PBL design
+
+
+###Java Using Objects and PBL design
 Build a Console GUI focused on Java Math Class: [LINK]()
-Extra!
-[Completiting solar system simulation (Used real world data and physics) (Not console app but imbedded in website)](https://tristancopley.github.io/dnhs-blog/)
+
+###Extra!
+[Completing solar system simulation (Used real world data and physics) (Not console app but imbedded in website)](https://tristancopley.github.io/dnhs-blog/)
