@@ -22,7 +22,6 @@ Unit 1 Take-aways
 
 completion through lesson 15
 Java Using Objects and PBL design
-Build a Console GUI focused on Java Math Class: LINK
-Cloned Notes on Objects: LINK
+Build a Console GUI focused on Java Math Class: [LINK]()
 Extra!
-(Completiting solar system simulation (Used real world data and physics) (Not console app but imbedded in website))[]
+[Completiting solar system simulation (Used real world data and physics) (Not console app but imbedded in website)]()
