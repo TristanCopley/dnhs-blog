@@ -24,4 +24,4 @@ title: 09/06 Ticket
 Java Using Objects and PBL design
 Build a Console GUI focused on Java Math Class: [LINK]()
 Extra!
-[Completiting solar system simulation (Used real world data and physics) (Not console app but imbedded in website)]()
+[Completiting solar system simulation (Used real world data and physics) (Not console app but imbedded in website)](https://tristancopley.github.io/dnhs-blog/)
