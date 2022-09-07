@@ -100,8 +100,10 @@ layout: default
     {%- endif %}
 
   {%- endif -%}
-  <canvas id="text"></canvas>
   <script type="module" defer>
+
+    var canvaT = document.createElement("canvas");
+    canvaT.id = 'text';
 
     import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r99/three.module.min.js';
     import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js';
