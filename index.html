@@ -162,10 +162,6 @@ window.onload = wrap_img;
 
     <script type="module" defer>
 
-    var canvaT = document.createElement("canvas");
-    canvaT.id = 'text';
-    document.body.appendChild(canvaT);
-
     import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r99/three.module.min.js';
     import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js';
     import * as dat from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
@@ -231,6 +227,10 @@ window.onload = wrap_img;
     const renderer = new THREE.WebGLRenderer( );
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
+
+    var canvaT = document.createElement("canvas");
+    canvaT.id = 'text';
+    document.body.appendChild(canvaT);
 
     window.addEventListener( 'resize', onWindowResize, false );
 
