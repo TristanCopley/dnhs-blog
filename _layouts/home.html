@@ -337,10 +337,6 @@ layout: default
     constantsFolder.add(constants, 'timeSteps', 0, 365);
     constantsFolder.add(constants, 'timePerStep', 0, 86400);
     constantsFolder.open();
-
-    const targetFolder = gui.addFolder('Camera target');
-    targetFolder.add(constants.ObjectToTrack, 'sun', [ 'earth', 'mars', 'pluto', 'mercury' ]);
-    targetFolder.open();
     
     function animate() {
 
