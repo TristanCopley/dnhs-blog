@@ -139,11 +139,6 @@ window.onload = wrap_img;
     </a>
 </h3><p class="post-meta-description">Code for Java</p><p class="post-meta">Aug 22, 2022</p>
 </li><li><h3>
-    <a class="post-link" href="/dnhs-blog/2020/09/08/solarblog.html">
-    Title
-    </a>
-</h3><p class="post-meta">Sep 8, 2020</p>
-</li><li><h3>
     <a class="post-link" href="/dnhs-blog/jupyter/2020/09/08/solar.html">
     Custom solar systems
     </a>
@@ -407,10 +402,6 @@ window.onload = wrap_img;
     constantsFolder.add(constants, 'timeSteps', 0, 365);
     constantsFolder.add(constants, 'timePerStep', 0, 86400);
     constantsFolder.open();
-
-    const targetFolder = gui.addFolder('Camera target');
-    targetFolder.add(constants.ObjectToTrack, 'sun', [ 'earth', 'mars', 'pluto', 'mercury' ]);
-    targetFolder.open();
     
     function animate() {
 
