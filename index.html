@@ -129,15 +129,20 @@ window.onload = wrap_img;
     </a>
 </h3><p class="post-meta">Aug 28, 2022</p>
 </li><li><h3>
+    <a class="post-link" href="/dnhs-blog/jupyter/2022/08/22/hellopy.html">
+    Python Notebook
+    </a>
+</h3><p class="post-meta-description">Code for Python</p><p class="post-meta">Aug 22, 2022</p>
+</li><li><h3>
     <a class="post-link" href="/dnhs-blog/jupyter/2022/08/22/hellojava.html">
     Java Notebook
     </a>
 </h3><p class="post-meta-description">Code for Java</p><p class="post-meta">Aug 22, 2022</p>
 </li><li><h3>
-    <a class="post-link" href="/dnhs-blog/jupyter/2022/08/22/hellopy.html">
-    Python Notebook
+    <a class="post-link" href="/dnhs-blog/2020/09/08/solarblog.html">
+    Title
     </a>
-</h3><p class="post-meta-description">Code for Python</p><p class="post-meta">Aug 22, 2022</p>
+</h3><p class="post-meta">Sep 8, 2020</p>
 </li><li><h3>
     <a class="post-link" href="/dnhs-blog/markdown/2020/09/06/ticketweek3.html">
     09/06 Ticket
@@ -397,6 +402,10 @@ window.onload = wrap_img;
     constantsFolder.add(constants, 'timeSteps', 0, 365);
     constantsFolder.add(constants, 'timePerStep', 0, 86400);
     constantsFolder.open();
+
+    const targetFolder = gui.addFolder('Camera target');
+    targetFolder.add(constants.ObjectToTrack, 'sun', [ 'earth', 'mars', 'pluto', 'mercury' ]);
+    targetFolder.open();
     
     function animate() {
 
@@ -466,13 +475,9 @@ window.onload = wrap_img;
 
       };
 
-    cameraLock = sun.body.position;
+    cameraLock = constants.ObjectToTrack.body.position;
 
     for(let z = 0; z < bodies.length; z++) {
-    
-    /* finalCameraPositionX += bodies[z].body.position.x;
-    finalCameraPositionY += bodies[z].body.position.y;
-    finalCameraPositionZ += bodies[z].body.position.z; */
       
     if (constants.timeSteps > 0) {
 
@@ -501,9 +506,6 @@ window.onload = wrap_img;
       controls.target = new THREE.Vector3(cameraLock.x, cameraLock.y, cameraLock.z);
 
       controls.update();
-
-      /* camera.near = 0
-      camera.far = 0; */
 
       skybox.position.x = camera.position.x;
       skybox.position.y = camera.position.y;
