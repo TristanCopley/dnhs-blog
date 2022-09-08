@@ -337,6 +337,10 @@ layout: default
     constantsFolder.add(constants, 'timeSteps', 0, 365);
     constantsFolder.add(constants, 'timePerStep', 0, 86400);
     constantsFolder.open();
+
+    const targetFolder = gui.addFolder('Camera target');
+    targetFolder.add(constants.ObjectToTrack, 'sun', [ 'earth', 'mars', 'pluto', 'mercury' ]);
+    targetFolder.open();
     
     function animate() {
 
@@ -406,13 +410,9 @@ layout: default
 
       };
 
-    cameraLock = sun.body.position;
+    cameraLock = constants.ObjectToTrack.body.position;
 
     for(let z = 0; z < bodies.length; z++) {
-    
-    /* finalCameraPositionX += bodies[z].body.position.x;
-    finalCameraPositionY += bodies[z].body.position.y;
-    finalCameraPositionZ += bodies[z].body.position.z; */
       
     if (constants.timeSteps > 0) {
 
@@ -441,9 +441,6 @@ layout: default
       controls.target = new THREE.Vector3(cameraLock.x, cameraLock.y, cameraLock.z);
 
       controls.update();
-
-      /* camera.near = 0
-      camera.far = 0; */
 
       skybox.position.x = camera.position.x;
       skybox.position.y = camera.position.y;
