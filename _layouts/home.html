@@ -2,28 +2,6 @@
 layout: default
 ---
 
-<style>
-
-  canvas {
-
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    z-index: -1;
-
-  }
-
-  #text {
-
-    z-index: 3;
-    pointer-events: none;
-
-  }
-
-</style>
-
-
 <div class="home">
   {%- if page.title -%}
     <h1 class="page-heading">{{ page.title }}</h1>
@@ -101,383 +79,60 @@ layout: default
 
   {%- endif -%}
   <script type="module" defer>
-
-    import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r99/three.module.min.js';
-    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js';
-    import * as dat from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
+    "use strict";let style=document.createElement("style");style.type="text/css",style.innerHTML="body {margin: 0;padding: 0;} #text {z-index: 1;pointer-events: none;} canvas {position: absolute;width: 100vw;height: 100vh;overflow: hidden;z-index: -1;}",document.getElementsByTagName("head")[0].appendChild(style);import*as e from"https://cdnjs.cloudflare.com/ajax/libs/three.js/r99/three.module.min.js";import{OrbitControls as t}from"https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js";import*as i from"https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js";let gui=new i.GUI;function rotateVector(t,i,o,s){let a=new e.Vector3(t.x,t.y,t.z),n=a.x;a.x=a.x*Math.cos(s)-a.y*Math.sin(s),a.y=n*Math.sin(s)+a.y*Math.cos(s),n=a.x,a.x=a.x*Math.cos(o)+a.z*Math.sin(o),a.z=-n*Math.sin(o)+a.z*Math.cos(o);let r=a.y;return a.y=a.y*Math.cos(i)-a.z*Math.sin(i),a.z=r*Math.sin(i)+a.z*Math.cos(i),a}function distance(e,t){let i=e.x-t.x,o=e.y-t.y,s;return Math.sqrt(i**2+o**2+(e.z-t.z)**2)||0}function onWindowResize(){camera.aspect=window.innerWidth/window.innerHeight,camera.updateProjectionMatrix(),renderer.setSize(window.innerWidth,window.innerHeight)}class AstronomicalObject{constructor(t,i,o,s,a){this.trailPoints=[],this.line=!1,Object.defineProperty(this,"radius",{value:i*constants.scale,writable:!1}),Object.defineProperty(this,"name",{value:t,writable:!1}),this.position=new e.Vector3(0,0,0),this.velocity=new e.Vector3(0,0,0),this.acceleration=new e.Vector3(0,0,0),this.mass=o||1,s&&(this.position=new e.Vector3(...s)),a&&(this.velocity=new e.Vector3(...a));let n=new e.SphereGeometry(this.radius,32,32),r=new e.MeshPhongMaterial({color:16777215});return this.body=new e.Mesh(n,r),this.color={set:e=>{this.body.material.color.set(e)}},space[this.name.toLowerCase()]=this,bodies.push(this),scene.add(this.body),this}}let space={},bodies=[],elapseSpeed=0,dt=0,oldTime=0,simulationTime=9466848e5,objectTextVector=new e.Vector3,constants={simSpeed:0,gravity:66743e-15,scale:3e-10},tick=0,timePerStep=1,stepsPerTick=1,scene=new e.Scene,camera=new e.PerspectiveCamera(75,window.innerWidth/window.innerHeight,.01,1e4);camera.target=void 0,camera.position.z=200;let renderer=new e.WebGLRenderer;renderer.setSize(window.innerWidth,window.innerHeight),renderer.shadowMap.enabled=!0,document.body.appendChild(renderer.domElement);let textCanvas=document.createElement("canvas");textCanvas.id="text",document.body.appendChild(textCanvas);let txtctx=textCanvas.getContext("2d");function createPathStrings(e){let t=["right","left","top","bottom","front","back"].map(e=>"https://tristancopley.github.io/dnhs-blog/images/skybox/"+e+".png");return t}window.addEventListener("resize",onWindowResize,!1);let skyboxImage="space";function createMaterialArray(t){let i=createPathStrings(t),o=i.map(t=>{let i=new e.TextureLoader().load(t);return new e.MeshBasicMaterial({map:i,side:e.BackSide})});return o}let materialArray=createMaterialArray(skyboxImage),skyboxGeo=new e.BoxGeometry(5e14*constants.scale,5e14*constants.scale,5e14*constants.scale),skybox=new e.Mesh(skyboxGeo,materialArray);scene.add(skybox);let pointLight=new e.PointLight(16777215,3);pointLight.position.x=0,pointLight.position.y=0,pointLight.position.z=0,pointLight.castShadows=!0,scene.add(pointLight);let aLight=new e.AmbientLight(16777215,.8);scene.add(aLight);let controls=new t(camera,renderer.domElement);function end(){let e=gui.addFolder("Time");e.add(constants,"simSpeed",0,950),e.open(),camera.target=Object.keys(space)[0].toString();let t=gui.addFolder("Camera");t.add(camera,"target",Object.getOwnPropertyNames(space)),t.open()}function animate(){if(0===oldTime)return oldTime=Date.now(),requestAnimationFrame(animate);dt=Date.now()-oldTime||1,oldTime=Date.now(),tick++,simulationTime+=(stepsPerTick=37e3)*(timePerStep=500*(constants.simSpeed/1e5*1.00015**(86400*constants.simSpeed/1e3)))*1e3/(1e3/(dt||1)),timePerStep/=1e3/(dt||1),tick%10==1&&(elapseSpeed=stepsPerTick*timePerStep*1e3/(1e3/dt));for(let t=0;t<stepsPerTick;t++)if(0!==stepsPerTick){for(let i=0;i<bodies.length;i++)for(let o=i+1;o<bodies.length;o++){let s=bodies[i].position.x-bodies[o].position.x,a=bodies[i].position.y-bodies[o].position.y,n=bodies[i].position.z-bodies[o].position.z,r=Math.sqrt(s**2+a**2+n**2)||1,$=constants.gravity*(bodies[i].mass*bodies[o].mass)/r**2;bodies[i].acceleration.x-=s/r*$/bodies[i].mass,bodies[i].acceleration.y-=a/r*$/bodies[i].mass,bodies[i].acceleration.z-=n/r*$/bodies[i].mass,bodies[o].acceleration.x+=s/r*$/bodies[o].mass,bodies[o].acceleration.y+=a/r*$/bodies[o].mass,bodies[o].acceleration.z+=n/r*$/bodies[o].mass}for(let c=0;c<bodies.length;c++)bodies[c].velocity.x+=bodies[c].acceleration.x*timePerStep,bodies[c].velocity.y+=bodies[c].acceleration.y*timePerStep,bodies[c].velocity.z+=bodies[c].acceleration.z*timePerStep,bodies[c].position.x+=bodies[c].velocity.x*timePerStep,bodies[c].position.y+=bodies[c].velocity.y*timePerStep,bodies[c].position.z+=bodies[c].velocity.z*timePerStep,bodies[c].acceleration=new e.Vector3(0,0,0);if(t%200==0)for(let d=0;d<bodies.length;d++)bodies[d].body.position.x=bodies[d].position.x*constants.scale,bodies[d].body.position.y=bodies[d].position.y*constants.scale,bodies[d].body.position.z=bodies[d].position.z*constants.scale,bodies[d].trailPoints.push(new e.Vector3(bodies[d].body.position.x,bodies[d].body.position.y,bodies[d].body.position.z)),bodies[d].trailPoints.length>1e4&&bodies[d].trailPoints.shift()}for(let l=0;l<bodies.length;l++)if(stepsPerTick>0){"object"==typeof bodies[l].line&&scene.remove(bodies[l].line);let p=new e.Line(new e.BufferGeometry().setFromPoints(bodies[l].trailPoints),new e.LineBasicMaterial({color:16711935}));p.material.color.set(bodies[l].body.material.color),bodies[l].line=p,scene.add(p)}camera.position.x-=controls.target.x-space[camera.target].body.position.x,camera.position.y-=controls.target.y-space[camera.target].body.position.y,camera.position.z-=controls.target.z-space[camera.target].body.position.z,pointLight.position.x=space[camera.target].body.position.x,pointLight.position.y=space[camera.target].body.position.y,pointLight.position.z=space[camera.target].body.position.z,controls.target=new e.Vector3(space[camera.target].body.position.x,space[camera.target].body.position.y,space[camera.target].body.position.z),controls.update(),skybox.position.x=camera.position.x,skybox.position.y=camera.position.y,skybox.position.z=camera.position.z,textCanvas.width=renderer.domElement.width,textCanvas.height=renderer.domElement.height,txtctx.font="12px Courier New",txtctx.fillStyle="white";for(let m=0;m<bodies.length;m++)objectTextVector.set(bodies[m].body.position.x+bodies[m].radius,bodies[m].body.position.y+bodies[m].radius,bodies[m].body.position.z+bodies[m].radius),objectTextVector.project(camera),objectTextVector.x=Math.round((objectTextVector.x+1)*textCanvas.width/2),objectTextVector.y=Math.round((-objectTextVector.y+1)*textCanvas.height/2),objectTextVector.z<1&&txtctx.fillText(bodies[m].name,objectTextVector.x,objectTextVector.y);txtctx.font="20px Courier New",txtctx.fillStyle="white",txtctx.fillText(863e13>simulationTime?new Date(simulationTime):`Around ${new Intl.NumberFormat("en",{notation:"compact",minimumSignificantDigits:3,maximumSignificantDigits:3}).format(simulationTime/315576e5+30)} years into the future. . .`,20,20);let b="Error",y=1;elapseSpeed<1?b="false":elapseSpeed>=1&&elapseSpeed<1.05?b="second":elapseSpeed<60?b="seconds":elapseSpeed>=60&&elapseSpeed<63?(b="minute",y=60):elapseSpeed<3600?(b="minutes",y=60):elapseSpeed>=3600&&elapseSpeed<3780?(b="hour",y=3600):elapseSpeed<86500?(b="hours",y=3600):elapseSpeed>=86500&&elapseSpeed<90825?(b="day",y=86500):elapseSpeed<31572500?(b="days",y=86500):elapseSpeed>=31572500&&elapseSpeed<33151125?(b="year",y=31572500):elapseSpeed>31572500&&(b="years",y=31572500),"false"!=b?txtctx.fillText(new Intl.NumberFormat("en",{notation:"compact",minimumSignificantDigits:1,maximumSignificantDigits:3}).format(elapseSpeed/y)+" "+b+" per second",20,45):txtctx.fillText("No time is elapsing.",20,45),constants.simSpeed>600&&(txtctx.fillStyle="yellow",txtctx.fillText("Warning: Simulation may not stable at this speed",20,70));let x=distance(camera.position,space[camera.target].body.position);skybox.scale.set(x/200,x/200,x/200),camera.far=1e3*x,camera.near=.001*x,camera.updateProjectionMatrix(),renderer.render(scene,camera),requestAnimationFrame(animate)}animate();
     
-    const gui = new dat.GUI()
+    // You can edit the values here and remove planets and such
+    const sun = new AstronomicalObject('Sun', 6.95700e8, 1.989e30, [0, 0, 0], [0, 0, 0]);
+    sun.color.set('yellow');
 
-    function rotateVector(vector, tx, ty, tz) {
+    const mercury = new AstronomicalObject('Mercury', 2440500, 3.3010e23, [68426000000, 0, 0], [0, 47360, 0]);
+    mercury.color.set('brown');
+    mercury.position = rotateVector(mercury.position, 0, 0, 245.5 * Math.PI / 180);
+    mercury.velocity = rotateVector(mercury.velocity, 0, 7.005 * Math.PI / 180, 245.5 * Math.PI / 180);
 
-      let nVec = new THREE.Vector3(vector.x, vector.y, vector.z)
-
-      // Z rotation\
-      let tempX = nVec.x;
-      nVec.x = nVec.x * Math.cos(tz) - nVec.y * Math.sin(tz);
-      nVec.y = tempX * Math.sin(tz) + nVec.y * Math.cos(tz);
-      // Z
-
-      // Y rotation
-      tempX = nVec.x;
-      nVec.x = nVec.x * Math.cos(ty) + nVec.z * Math.sin(ty);
-      // Y
-      nVec.z = -tempX * Math.sin(ty) + nVec.z * Math.cos(ty);
-
-      // X rotation
-      // X
-      let tempY = nVec.y;
-      nVec.y = nVec.y * Math.cos(tx) - nVec.z * Math.sin(tx);
-      nVec.z = tempY * Math.sin(tx) + nVec.z * Math.cos(tx);
-
-      return nVec;
-
-    }
-
-    let bodies = [];
-
-    let vector = new THREE.Vector3();
+    const venus = new AstronomicalObject('Venus', 6051800, 4.8673e24, [107480000000, 0, 0], [0, 35020, 0]);
+    venus.color.set('orange');
+    venus.position = rotateVector(venus.position, 0, 0, 182 * Math.PI / 180);
+    venus.velocity = rotateVector(venus.velocity, 0, 3.3947 * Math.PI / 180, 182 * Math.PI / 180);
     
-    const constants = {
-    
-      timeSteps: 1,
-      timePerStep: 0, //40000, // in seconds
-      simTimePerStep: 0, // / fps
-      gravity: 6.6743e-11,
-      scale: 0.0000000001,
-      AstronomicalObjectSizeMultiplier: 1,
-      ObjectToTrack: undefined
-    
-    }
-
-    let dummyCamera = new THREE.Vector3(0,0,200);
-
-    let dt = 0;
-    let oldTime = Date.now();
-
-    let simulationTime = 946684800000; // Y2K
-
-    let textCanvas = document.getElementById('text');
-    let textctx = textCanvas.getContext('2d');
-    
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.01, 10000 );
-    camera.position.z = 200
-    
-    const renderer = new THREE.WebGLRenderer( );
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    document.body.appendChild( renderer.domElement );
-
-    var canvaT = document.createElement("canvas");
-    canvaT.id = 'text';
-    document.body.appendChild(canvaT);
-
-    window.addEventListener( 'resize', onWindowResize, false );
-
-    function onWindowResize(){
-
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-
-        renderer.setSize( window.innerWidth, window.innerHeight );
-
-    }
-    
-    let canvas = renderer.domElement;
-    class AstronomicalObject {
-    
-      constructor(name, radius, mass, position, velocity) {
-    
-        const geometry = new THREE.SphereGeometry( radius * constants.scale * constants.AstronomicalObjectSizeMultiplier, 32, 32 );
-        const material = new THREE.MeshPhongMaterial( { color: 0xffffff } );
-        this.body = new THREE.Mesh( geometry, material );
-        bodies.push( this );
-        scene.add( this.body );
-        this.body.radius = radius * constants.scale * constants.AstronomicalObjectSizeMultiplier;
-        this.body.position.x = 0;
-        this.name = name;
-        this.body.position.y = 0;
-        this.body.position.z = 0;
-        this.mass = mass;
-        this.trailPoints = [],
-        this.line = false;
-        this.motion = {
-    
-          position: new THREE.Vector3(0, 0, 0),
-          velocity: new THREE.Vector3(0, 0, 0),
-          acceleration: new THREE.Vector3(0, 0, 0)
-    
-        }
-    
-        if (position) this.motion.position = new THREE.Vector3(...position);
-        if (velocity) this.motion.velocity = new THREE.Vector3(...velocity);
-    
-      }
-    
-    }
-
-    function distance(vector1, vector2) {
-
-      let xDiff = bodies[x].motion.position.x - bodies[y].motion.position.x;
-      let yDiff = bodies[x].motion.position.y - bodies[y].motion.position.y;
-      let zDiff = bodies[x].motion.position.z - bodies[y].motion.position.z;
-
-      let scalar = Math.sqrt((xDiff)**2 + (yDiff)**2 + (zDiff)**2) || 0;
-
-    }
-    
-    let sun = new AstronomicalObject('Sun', 6.95700e8, 1.989e30, [0, 0, 0], [0, 0, 0]);
-    sun.body.material.color.set('yellow');
-
-    let mercury = new AstronomicalObject('Mercury', 2440500, 3.3010e23, [68426000000, 0, 0], [0, 47360, 0]);
-    mercury.body.material.color.set('brown');
-    mercury.motion.position = rotateVector(mercury.motion.position, 0, 0, 245.5 * Math.PI / 180);
-    mercury.motion.velocity = rotateVector(mercury.motion.velocity, 0, 7.005 * Math.PI / 180, 245.5 * Math.PI / 180);
-
-    let venus = new AstronomicalObject('Venus', 6051800, 4.8673e24, [107480000000, 0, 0], [0, 35020, 0]);
-    venus.body.material.color.set('orange');
-    venus.motion.position = rotateVector(venus.motion.position, 0, 0, 182 * Math.PI / 180);
-    venus.motion.velocity = rotateVector(venus.motion.velocity, 0, 3.3947 * Math.PI / 180, 182 * Math.PI / 180);
-    
-    let earth = new AstronomicalObject('Earth', 6371000, 5.972e24, [151000000000, 0, 0], [0, 2.978589e4, 0]); //m/s  
-    earth.body.material.color.set('green');
-    earth.motion.position = rotateVector(earth.motion.position, 0, 0, 109 * Math.PI / 180);
-    earth.motion.velocity = rotateVector(earth.motion.velocity, 0, 0, 109 * Math.PI / 180);
+    const earth = new AstronomicalObject('Earth', 6371000, 5.972e24, [151000000000, 0, 0], [0, 2.978589e4, 0]); //m/s  
+    earth.color.set('green');
+    earth.position = rotateVector(earth.position, 0, 0, 109 * Math.PI / 180);
+    earth.velocity = rotateVector(earth.velocity, 0, 0, 109 * Math.PI / 180);
 
     // let moon = new AstronomicalObject(1737400, 7.347e22, [151000000000 + 384399000, 0, 0], [0, 29800, 1022]);
-    // moon.body.material.color.set('white');
+    // moon.color.set('white');
 
-    let mars = new AstronomicalObject('Mars', 3389500, 6.39e23, [213140000000, 0, 0], [0, 24070, 0]);
-    mars.body.material.color.set('red');
-    mars.motion.position = rotateVector(mars.motion.position, 0, 0, -1 * Math.PI / 180);
-    mars.motion.velocity = rotateVector(mars.motion.velocity, 0, 1.851 * Math.PI / 180, -1 * Math.PI / 180);
+    const mars = new AstronomicalObject('Mars', 3389500, 6.39e23, [213140000000, 0, 0], [0, 24070, 0]);
+    mars.color.set('red');
+    mars.position = rotateVector(mars.position, 0, 0, -1 * Math.PI / 180);
+    mars.velocity = rotateVector(mars.velocity, 0, 1.851 * Math.PI / 180, -1 * Math.PI / 180);
 
-    let jupiter = new AstronomicalObject('Jupiter', 66854000, 1.89813e27, [741690000000, 0, 0], [0, 13060, 0]);
-    jupiter.body.material.color.set('pink');
-    jupiter.motion.position = rotateVector(jupiter.motion.position, 0, 0, 40 * Math.PI / 180);
-    jupiter.motion.velocity = rotateVector(jupiter.motion.velocity, 0, 1.305 * Math.PI / 180, 40 * Math.PI / 180);
+    const jupiter = new AstronomicalObject('Jupiter', 66854000, 1.89813e27, [741690000000, 0, 0], [0, 13060, 0]);
+    jupiter.color.set('pink');
+    jupiter.position = rotateVector(jupiter.position, 0, 0, 40 * Math.PI / 180);
+    jupiter.velocity = rotateVector(jupiter.velocity, 0, 1.305 * Math.PI / 180, 40 * Math.PI / 180);
 
-    let saturn = new AstronomicalObject('Saturn', 60268000, 5.6832e26, [1.4737e12, 0, 0], [0, 9680, 0]);
-    saturn.body.material.color.set('purple');
-    saturn.motion.position = rotateVector(saturn.motion.position, 0, 0, 50 * Math.PI / 180);
-    saturn.motion.velocity = rotateVector(saturn.motion.velocity, 0, 2.484 * Math.PI / 180, 50 * Math.PI / 180);
+    const saturn = new AstronomicalObject('Saturn', 60268000, 5.6832e26, [1.4737e12, 0, 0], [0, 9680, 0]);
+    saturn.color.set('purple');
+    saturn.position = rotateVector(saturn.position, 0, 0, 50 * Math.PI / 180);
+    saturn.velocity = rotateVector(saturn.velocity, 0, 2.484 * Math.PI / 180, 50 * Math.PI / 180);
 
-    let uranus = new AstronomicalObject('Uranus', 25559000, 8.6811e25, [2.9444e+12, 0, 0], [0, 6800, 0]);
-    uranus.body.material.color.set('blue');
-    uranus.motion.position = rotateVector(uranus.motion.position, 0, 0, 325 * Math.PI / 180);
-    uranus.motion.velocity = rotateVector(uranus.motion.velocity, 0, 0.770 * Math.PI / 180, 325 * Math.PI / 180);
+    const uranus = new AstronomicalObject('Uranus', 25559000, 8.6811e25, [2.9444e+12, 0, 0], [0, 6800, 0]);
+    uranus.color.set('blue');
+    uranus.position = rotateVector(uranus.position, 0, 0, 325 * Math.PI / 180);
+    uranus.velocity = rotateVector(uranus.velocity, 0, 0.770 * Math.PI / 180, 325 * Math.PI / 180);
 
-    let neptune = new AstronomicalObject('Neptune', 24341000, 1.02409e26, [4.558857e12, 0, 0], [0, 5430, 0]);
-    neptune.body.material.color.set('magenta');
-    neptune.motion.position = rotateVector(neptune.motion.position, 0, 0, 315 * Math.PI / 180);
-    neptune.motion.velocity = rotateVector(neptune.motion.velocity, 0, 1.769 * Math.PI / 180, 315 * Math.PI / 180);
+    const neptune = new AstronomicalObject('Neptune', 24341000, 1.02409e26, [4.558857e12, 0, 0], [0, 5430, 0]);
+    neptune.color.set('magenta');
+    neptune.position = rotateVector(neptune.position, 0, 0, 315 * Math.PI / 180);
+    neptune.velocity = rotateVector(neptune.velocity, 0, 1.769 * Math.PI / 180, 315 * Math.PI / 180);
 
-    let pluto = new AstronomicalObject('Pluto', 1188000, 1.02409e26, [7.304326e12, 0, 0], [0, 3710, 0]);
-    pluto.body.material.color.set('white');
-    pluto.motion.position = rotateVector(pluto.motion.position, 0, 0, 270 * Math.PI / 180);
-    pluto.motion.velocity = rotateVector(pluto.motion.velocity, 0, 17.14 * Math.PI / 180, 270 * Math.PI / 180);
+    const pluto = new AstronomicalObject('Pluto', 1188000, 1.02409e26, [7.304326e12, 0, 0], [0, 3710, 0]);
+    pluto.color.set('white');
+    pluto.position = rotateVector(pluto.position, 0, 0, 270 * Math.PI / 180);
+    pluto.velocity = rotateVector(pluto.velocity, 0, 17.14 * Math.PI / 180, 270 * Math.PI / 180);
 
-    // WHICH OBJECT TO TRACK
-    constants.ObjectToTrack = sun;
-
-    function createPathStrings(filename) {
-    const baseFilename = "https://tristancopley.github.io/dnhs-blog/images/skybox/";
-    const fileType = ".png";
-    const sides = ["right", "left", "top", "bottom", "front", "back"];
-
-    const pathStings = sides.map(side => {
-
-        return baseFilename + side + fileType;
-
-    });
-
-    return pathStings;
-
-    }
-
-    let skyboxImage = "space";
-    function createMaterialArray(filename) {
-    const skyboxImagepaths = createPathStrings(filename);
-    const materialArray = skyboxImagepaths.map(image => {
-
-        let texture = new THREE.TextureLoader().load(image);
-
-        return new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide });
-
-    });
-
-    return materialArray;
-
-    }
-
-    const materialArray = createMaterialArray(skyboxImage);
-    let skyboxGeo = new THREE.BoxGeometry(50000000000000 * constants.scale, 50000000000000 * constants.scale, 50000000000000 * constants.scale);
-    let skybox = new THREE.Mesh(skyboxGeo, materialArray);
-    scene.add(skybox);
-
-    let trails = [];
-    
-    renderer.shadowMap.enabled = true;
-    
-    const pointLight = new THREE.PointLight( 0xffffff, 3);
-    pointLight.position.x = 0;
-    pointLight.position.y = 0;
-    pointLight.position.z = 0;
-    pointLight.castShadows = true;
-    scene.add( pointLight );
-    
-    const aLight = new THREE.AmbientLight( 0xffffff, 0.8);
-    scene.add( aLight );
-    
-    const controls = new OrbitControls(camera, renderer.domElement);
-
-    controls.autoRotate = true;
-    
-    const constantsFolder = gui.addFolder('Constants');
-    constantsFolder.add(constants, 'timeSteps', 0, 365);
-    constantsFolder.add(constants, 'timePerStep', 0, 86400);
-    constantsFolder.open();
-    
-    function animate() {
-
-      dt = Date.now() - oldTime || 1;
-      oldTime = Date.now();
-
-      constants.simTimePerStep = constants.timePerStep / (1000 / (dt || 1));
-
-      simulationTime += (constants.simTimePerStep * constants.timeSteps ** 2) * 1000;
-    
-      for (let t = 0; t < constants.timeSteps ** 2; t++) {        
-    
-          if (constants.timeSteps === 0) continue;
-    
-          for(let x = 0; x < bodies.length; x++) {
-    
-              for(let y = x + 1; y < bodies.length; y++) {
-                  
-                let xDiff = bodies[x].motion.position.x - bodies[y].motion.position.x;
-                let yDiff = bodies[x].motion.position.y - bodies[y].motion.position.y;
-                let zDiff = bodies[x].motion.position.z - bodies[y].motion.position.z;
-    
-                let scalar = Math.sqrt((xDiff)**2 + (yDiff)**2 + (zDiff)**2) || 1;
-                let force = constants.gravity * (bodies[x].mass * bodies[y].mass) / (scalar**2);
-    
-                bodies[x].motion.acceleration.x -= (xDiff / scalar * force) / bodies[x].mass;
-                bodies[x].motion.acceleration.y -= (yDiff / scalar * force) / bodies[x].mass;
-                bodies[x].motion.acceleration.z -= (zDiff / scalar * force) / bodies[x].mass;
-    
-                bodies[y].motion.acceleration.x += (xDiff / scalar * force) / bodies[y].mass;
-                bodies[y].motion.acceleration.y += (yDiff / scalar * force) / bodies[y].mass;
-                bodies[y].motion.acceleration.z += (zDiff / scalar * force) / bodies[y].mass;
-    
-              }   
-    
-            }
-      
-            for(let z = 0; z < bodies.length; z++) {
-      
-              bodies[z].motion.velocity.x += bodies[z].motion.acceleration.x * constants.simTimePerStep;
-              bodies[z].motion.velocity.y += bodies[z].motion.acceleration.y * constants.simTimePerStep;
-              bodies[z].motion.velocity.z += bodies[z].motion.acceleration.z * constants.simTimePerStep;
-
-              bodies[z].motion.position.x += bodies[z].motion.velocity.x * constants.simTimePerStep;
-              bodies[z].motion.position.y += bodies[z].motion.velocity.y * constants.simTimePerStep;
-              bodies[z].motion.position.z += bodies[z].motion.velocity.z * constants.simTimePerStep;
-
-              bodies[z].motion.acceleration = new THREE.Vector3(0, 0, 0);
-      
-            }
-      
-      }
-      
-      for(let z = 0; z < bodies.length; z++) {
-      
-        bodies[z].body.position.x = bodies[z].motion.position.x * constants.scale;
-        bodies[z].body.position.y = bodies[z].motion.position.y * constants.scale;
-        bodies[z].body.position.z = bodies[z].motion.position.z * constants.scale;
-      
-      }
-      
-      let cameraLock = {
-
-          x: 0,
-          y: 0,
-          z: 0
-
-      };
-
-    cameraLock = constants.ObjectToTrack.body.position;
-
-    for(let z = 0; z < bodies.length; z++) {
-      
-    if (constants.timeSteps > 0) {
-
-        bodies[z].trailPoints.push(new THREE.Vector3(bodies[z].body.position.x, bodies[z].body.position.y, bodies[z].body.position.z));
-        if (bodies[z].trailPoints.length > 1000) bodies[z].trailPoints.shift();
-    
-        // CREATE THE LINE
-        if(typeof bodies[z].line == 'object') scene.remove(bodies[z].line);
-        let line = new THREE.Line( new THREE.BufferGeometry().setFromPoints( bodies[z].trailPoints ), new THREE.LineBasicMaterial({color: 0xff00ff}));
-        line.material.color.set(bodies[z].body.material.color)
-        bodies[z].line = line;
-        scene.add(line);
-
-      }
-    
-    }
-      
-      camera.position.x -= controls.target.x - cameraLock.x;
-      camera.position.y -= controls.target.y - cameraLock.y;
-      camera.position.z -= controls.target.z - cameraLock.z;
-      
-      pointLight.position.x = cameraLock.x;
-      pointLight.position.y = cameraLock.y;
-      pointLight.position.z = cameraLock.z;
-      
-      controls.target = new THREE.Vector3(cameraLock.x, cameraLock.y, cameraLock.z);
-
-      controls.update();
-
-      skybox.position.x = camera.position.x;
-      skybox.position.y = camera.position.y;
-      skybox.position.z = camera.position.z;
-
-      textCanvas.width = canvas.width;
-      textCanvas.height = canvas.height;
-
-      textctx.font = "12px Courier New";
-      textctx.fillStyle = "white";
-
-      for(let z = 0; z < bodies.length; z++) {
-
-        vector.set( bodies[z].body.position.x + bodies[z].body.radius, bodies[z].body.position.y + bodies[z].body.radius, bodies[z].body.position.z + bodies[z].body.radius);
-
-        // map to normalized device coordinate (NDC) space
-        vector.project( camera );
-
-        // map to 2D screen space
-        vector.x = Math.round( (   vector.x + 1 ) * canvas.width  / 2 );
-        vector.y = Math.round( ( - vector.y + 1 ) * canvas.height / 2 );
-
-        if(vector.z < 1) textctx.fillText(bodies[z].name, vector.x, vector.y);
-      
-      }
-
-      textctx.font = "20px Courier New";
-      textctx.fillStyle = "white";
-      textctx.fillText(new Date(simulationTime), 20, 20);
-
-      // // Website mode
-      // constants.timePerStep = Math.abs(Math.sin(Date.now()/10000) * 126400) + 40000;
-      // constants.timeSteps = 10;
-
-      renderer.render( scene, camera );
-    
-      requestAnimationFrame( animate );
-
-    }
-    
-    animate();
-          
-    </script>
+    end();
+  </script>
 </div>
