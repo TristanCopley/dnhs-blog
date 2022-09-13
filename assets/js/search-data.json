@@ -2,6 +2,17 @@
   
     
         "post0": {
+            "title": "Example Solar System Page",
+            "content": "",
+            "url": "https://tristancopley.github.io/dnhs-blog/markdown/2022/09/13/solarproj.html",
+            "relUrl": "/markdown/2022/09/13/solarproj.html",
+            "date": " • Sep 13, 2022"
+        }
+        
+    
+  
+    
+        ,"post1": {
             "title": "09/11 Ticket",
             "content": "Deployment . Deployed Site 1: photoboard.ddns.net . Deployed Site 2: tristanjava.ddns.net . Lesson On Conditionals . Lesson on Conditionals . Focus/Habits/Productive Blogging . Solar simulation blog: LINK . My Fastpages has failed to deploy multiple times and I can’t get it running. .",
             "url": "https://tristancopley.github.io/dnhs-blog/markdown/2022/09/11/week3.html",
@@ -12,7 +23,7 @@
     
   
     
-        ,"post1": {
+        ,"post2": {
             "title": "IF-ELSE Explanations",
             "content": "// All of the boolean expressions below evaluate to true if (true) { System.out.println(&quot;True code block&quot;); } if (true &amp;&amp; !false) { System.out.println(&quot;True and Not False code block&quot;); } if (true || false) { System.out.println(&quot;True or False code block&quot;); } if ((true &amp;&amp; !false) &amp;&amp; (true || false)) { System.out.println(&quot;Confusing code block&quot;); } if (!((false || !true) || (false &amp;&amp; true))) { System.out.println(&quot;De Morgan&#39;s law in my head of confusing code block&quot;); } // Can any of the above expression be simplified? What would they simplify to? Are any of these expressions useful? . They can all be simplified down to just System.out.println(&quot;True&quot;);. Also, these are all useless. Wrapping code in a statment that is guaranteed to be true doesn&#39;t make sense. However, if you were to replace true/false with variables they may appear to be useful. . A combination of &amp;&amp; and || and ! are useful for many different occasions. . Notes . If, else and booleans are useful. I use a complex set of IF and ELSE statments with boolean parameters in this project. This is an example of my extensive knowledge of if - else statments. . De Morgan&#39;s Law Complex conditional statements can be hard to evaluate when looking at &quot;!&quot; or &quot;not&quot; operators, and comparison operators, like &gt;, &lt;, &gt;=, &lt;=, ||, &amp;&amp;, and more . De morgan&#39;s law helps by explaining how operators change when a &quot;!&quot; negation is present . Conversions: &lt;= goes to &gt; &gt;= goes to &lt; &lt; goes to &gt;= &gt; goes to &lt;= == goes to != != becomes == .",
             "url": "https://tristancopley.github.io/dnhs-blog/jupyter/2022/09/11/ifelse.html",
@@ -23,7 +34,7 @@
     
   
     
-        ,"post2": {
+        ,"post3": {
             "title": "Using Java Objects for Average Calculator",
             "content": "// imports allow you to use code already written by others. It is good to explore and learn libraries. The names around the dots often give you a hint to the originator of the code. import java.util.Scanner; //library for user input import java.lang.Math; //library for random numbers public class Menu { // Instance Variables public final String DEFAULT = &quot; u001B[0m&quot;; // Default Terminal Color public final String[][] COLORS = { // 2D Array of ANSI Terminal Colors {&quot;Default&quot;,DEFAULT}, {&quot;Red&quot;, &quot; u001B[31m&quot;}, {&quot;Green&quot;, &quot; u001B[32m&quot;}, {&quot;Yellow&quot;, &quot; u001B[33m&quot;}, {&quot;Blue&quot;, &quot; u001B[34m&quot;}, {&quot;Purple&quot;, &quot; u001B[35m&quot;}, {&quot;Cyan&quot;, &quot; u001B[36m&quot;}, {&quot;White&quot;, &quot; u001B[37m&quot;}, }; // 2D column location for data public final int NAME = 0; public final int ANSI = 1; // ANSI is the &quot;standard&quot; for terminal codes private void average() { Scanner input; double sampleInputInt = 0.0; double total = 0; // primitive int input = new Scanner(System.in); System.out.print(&quot;How many numbers do you want to average: &quot;); try { sampleInputInt = input.nextInt(); System.out.println(sampleInputInt); } catch (Exception e) { // if not an integer System.out.println(&quot;Not an int (form like 159), &quot; + e); } input.close(); for (int i = 0; i &lt; sampleInputInt; i += 1) { if (i == 0) { System.out.print(&quot;Add your first number: &quot;); } else { System.out.print(&quot;Add another number: &quot;); } input = new Scanner(System.in); try { double sampleInputDouble = input.nextDouble(); System.out.println(sampleInputDouble); total += sampleInputDouble; } catch (Exception e) { // if not an integer System.out.println(&quot;Not a double (form like 159 or 1.1), &quot; + e); } input.close(); } total /= sampleInputInt; System.out.print(&quot;Your average is: &quot;); System.out.println(total); } // Constructor on this Object takes control of menu events and actions public Menu() { Scanner sc = new Scanner(System.in); // using Java Scanner Object this.print(); // print Menu boolean quit = false; while (!quit) { try { // scan for Input int choice = sc.nextInt(); // using method from Java Scanner Object System.out.print(&quot;&quot; + choice + &quot;: &quot;); quit = this.action(choice); // take action } catch (Exception e) { sc.nextLine(); // error: clear buffer System.out.println(e + &quot;: Not a number, try again.&quot;); } } sc.close(); } // Print the menu options to Terminal private void print() { //System.out.println commands below is used to present a Menu to the user. System.out.println(&quot;- n&quot;); System.out.println(&quot;Choose from these choices&quot;); System.out.println(&quot;- n&quot;); System.out.println(&quot;1 - Say Hello&quot;); System.out.println(&quot;2 - Output colors&quot;); System.out.println(&quot;3 - Loading in color&quot;); System.out.println(&quot;4 - Average Calculator&quot;); System.out.println(&quot;0 - Quit&quot;); System.out.println(&quot;- n&quot;); } // Private method to perform action and return true if action is to quit/exit private boolean action(int selection) { boolean quit = false; switch (selection) { // Switch or Switch/Case is Control Flow statement and is used to evaluate the user selection case 0: System.out.print(&quot;Goodbye, World!&quot;); quit = true; break; case 1: System.out.print(&quot;Hello, World!&quot;); break; case 2: for(int i = 0; i &lt; COLORS.length; i++) // loop through COLORS array System.out.print(COLORS[i][ANSI] + COLORS[i][NAME]); break; case 3: System.out.print(&quot;Loading...&quot;); for (int i = 0; i &lt; 20; i++) { // fixed length loading bar int random = (int) (Math.random() * COLORS.length); // random logic try { Thread.sleep(100); // delay for loading } catch (Exception e) { System.out.println(e); } System.out.print(COLORS[random][ANSI] + &quot;#&quot;); } break; case 4: average(); break; default: //Prints error message from console System.out.print(&quot;Unexpected choice, try again.&quot;); } System.out.println(DEFAULT); // make sure to reset color and provide new line return quit; } // Static driver/tester method static public void main(String[] args) { new Menu(); // starting Menu object } } Menu.main(null); . - Choose from these choices - 1 - Say Hello 2 - Output colors 3 - Loading in color 4 - Average Calculator 0 - Quit - 4: How many numbers do you want to average: 3.0 Add your first number: 1.0 Add another number: 2.0 Add another number: 9.0 Your average is: 4.0 0: Goodbye, World! .",
             "url": "https://tristancopley.github.io/dnhs-blog/jupyter/2022/09/06/menu.html",
@@ -34,7 +45,7 @@
     
   
     
-        ,"post3": {
+        ,"post4": {
             "title": "Java Average Calculator",
             "content": "// java style to import library import java.util.Scanner; // class must alway have 1st letter as uppercase, CamelCase is Java Class convention public class ScanPrimitives { public static void main(String[] args) { Scanner input; double sampleInputInt = 0.0; double total = 0; // primitive int input = new Scanner(System.in); System.out.print(&quot;How many numbers do you want to average: &quot;); try { sampleInputInt = input.nextInt(); System.out.println(sampleInputInt); } catch (Exception e) { // if not an integer System.out.println(&quot;Not an int (form like 159), &quot; + e); } input.close(); for (int i = 0; i &lt; sampleInputInt; i += 1) { if (i == 0) { System.out.print(&quot;Add your first number: &quot;); } else { System.out.print(&quot;Add another number: &quot;); } input = new Scanner(System.in); try { double sampleInputDouble = input.nextDouble(); System.out.println(sampleInputDouble); total += sampleInputDouble; } catch (Exception e) { // if not an integer System.out.println(&quot;Not a double (form like 159 or 1.1), &quot; + e); } input.close(); } total /= sampleInputInt; System.out.print(&quot;Your average is: &quot;); System.out.println(total); } } ScanPrimitives.main(null); . How many numbers do you want to average: 2.0 Add your first number: 1.0 Add another number: 3.0 Your average is: 2.0 .",
             "url": "https://tristancopley.github.io/dnhs-blog/jupyter/2022/08/29/calc.html",
@@ -45,7 +56,7 @@
     
   
     
-        ,"post4": {
+        ,"post5": {
             "title": "Title",
             "content": "// java style to import library import java.util.Scanner; // class must alway have 1st letter as uppercase, CamelCase is Java Class convention public class ScanPrimitives { public static void main(String[] args) { Scanner input; // primitive int input = new Scanner(System.in); System.out.print(&quot;Enter an integer: &quot;); try { int sampleInputInt = input.nextInt(); System.out.println(sampleInputInt); } catch (Exception e) { // if not an integer System.out.println(&quot;Not an integer (form like 159), &quot; + e); } input.close(); // primitive double input = new Scanner(System.in); System.out.print(&quot;Enter a double: &quot;); try { double sampleInputDouble = input.nextDouble(); System.out.println(sampleInputDouble); } catch (Exception e) { // if not a number System.out.println(&quot;Not an double (form like 9.99), &quot; + e); } input.close(); // primitive boolean input = new Scanner(System.in); System.out.print(&quot;Enter a boolean: &quot;); try { boolean sampleInputBoolean = input.nextBoolean(); System.out.println(sampleInputBoolean); } catch (Exception e) { // if not true or false System.out.println(&quot;Not an boolean (true or false), &quot; + e); } input.close(); // wrapper class String input = new Scanner(System.in); System.out.print(&quot;Enter a String: &quot;); try { String sampleInputString = input.nextLine(); System.out.println(sampleInputString); } catch (Exception e) { // this may never happen System.out.println(&quot;Not an String, &quot; + e); } input.close(); } } ScanPrimitives.main(null); . Enter an integer: 9 Enter a double: 9.1 Enter a boolean: true Enter a String: Things .",
             "url": "https://tristancopley.github.io/dnhs-blog/2022/08/28/primitives.html",
@@ -56,7 +67,7 @@
     
   
     
-        ,"post5": {
+        ,"post6": {
             "title": "Python Notebook",
             "content": "print(&#39;hello&#39;) . hello .",
             "url": "https://tristancopley.github.io/dnhs-blog/jupyter/2022/08/22/hellopy.html",
@@ -67,7 +78,7 @@
     
   
     
-        ,"post6": {
+        ,"post7": {
             "title": "Java Notebook",
             "content": "System.out.println(&quot;Hello World&quot;); . Hello World .",
             "url": "https://tristancopley.github.io/dnhs-blog/jupyter/2022/08/22/hellojava.html",
@@ -78,7 +89,7 @@
     
   
     
-        ,"post7": {
+        ,"post8": {
             "title": "Custom solar systems",
             "content": "Overview . Why should I do this? . Because it looks cool? Duh. . . Setup . As it’s own blog page . 1: Make new blank post (.md file) | 2: Copy code from this link into the file | 3: Enjoy. | . 1: New post . Create a new .md file in _posts. | . 2: Add code . Go to this link and copy the code from the file and paste it into your new .md file. | . 3: Enjoy . Look at the new page, it’s not that complicated. | . . As your home page background . 1: Locate a specific section at the bottom of your home.html file in _layouts | 2: Copy code from this link into the file at the specific section | 3: Enjoy. | . 1: Locate . You need to go to your _layouts folder and click on home.html. | . 2: Add code . Go to this link and copy the code from the file and paste it at the bottom in the specific location marked. | . 3: Enjoy . Look at your homepage, it’s not that complicated. | . . How do I play with my solar system? . Manipulating time . In the top-right of the screen there should be a single slider, simulationSpeed. The slider measures how much time in the simualtion will pass every real-time second. . Looking around . Using your mouse or trackpad, click the screen and drag. If the simulation is your homepage background then you CAN NOT move the simulation manually. . Specifying which planet the camera orbits . A dropdown should be present in the top-right of your screen called Camera Target. Select your planet from that drop down and the camera will start tracking that planet instead. . How do I customize it? . This is where the real fun begins. The simulation is pre-built with our solar system as it was in the year 2000 (Pluto is included :D). . . Adding planets . Add planets with this simple line of code: . addAstronomicalObject(new AstronomicalObject(name, radius, mass (kg), position (m), velocity (m/s))); . The name is pretty staightforward. Example: . // Earth addAstronomicalObject(new AstronomicalObject(&#39;Earth&#39;, mass, weight (kg), position (m), velocity (m/s))); . The radius is the radius of the object in meters. Example: . // 6371000 // in meters addAstronomicalObject(new AstronomicalObject(&#39;Earth&#39;, 6371000, weight (kg), position (m), velocity (m/s))); . The mass is the mass of the object in kilograms. Planets have A LOT of mass so I reccomend using scientific notation. Example: . // 5.972e24 // in kilograms addAstronomicalObject(new AstronomicalObject(&#39;Earth&#39;, 6371000, 5.972e24, position (m), velocity (m/s))); . The position is the x-axis, y-axis, and z-axis offset from the origin (0, 0, 0) in meters. The position parameter accepts a list with 3 items. Example: . // [151000000000, 0, 0] // x y z // Each item is in meters addAstronomicalObject(new AstronomicalObject(&#39;Earth&#39;, 6371000, 5.972e24, [151000000000, 0, 0], velocity (m/s))); . The velocity is the x-axis, y-axis, and z-axis velocity in meters per second at the start of the simulation. The velocity parameter accepts a list with 3 items. Example: . // [0, 29785.89, 0] // x y z // Each item is in meters per second addAstronomicalObject(new AstronomicalObject(&#39;Earth&#39;, 6371000, 5.972e24, [151000000000, 0, 0], [0, 29785.89, 0])); . The final code look something like this: . addAstronomicalObject(new AstronomicalObject(&#39;Earth&#39;, 6371000, 5.972e24, [151000000000, 0, 0], [0, 29785.89, 0])); . . Planet colors . You can alter a planet’s colors really easily. Example: . // Instead of earth, put the name of your planet space.earth.color.set(&#39;green&#39;); . . Adjusting a planet’s angular orbit . To alter a planets orbit its a little more complicated. Either you manually add some X, Y or Z velocity, which will make it angled instead of flat, or you can angle it with a special function I added. The reason we use this special function is because of a simple but annoying problem. If you search up the orbital speed of Pluto for example, NASA lists its orbital speed as 3,710 meters per second. The problem with that is Pluto has an orbit angle of 17.14 degrees. The way to get both orbit velocity and orbit angle correct is to rotate the velocity of pluto by 17.14 degrees with the special rotateVector() function. rotateVector() returns a rotated vector. The function has 4 parameters, the vector to rotate, in this case its space.pluto.velocity, and the last 3 are x-rotation, y-rotation and z-rotation. Rotations are in radians, but by using the DEG * Math.PI / 180 formula inside the parameter you can just type in a degree and it’ll be in radians. Example: . space.pluto.velocity = rotateVector(space.pluto.velocity, 0, 17.14 * Math.PI / 180, 0); . Since position is also a vector, like velocity, you can apply the rotateVector() function on a planet’s position to get the orbit perfect. You use this to rotate the apex of the orbit. Note space.pluto.position instead of space.pluto.position Example: . space.pluto.position = rotateVector(space.pluto.position, 0, 17.14 * Math.PI / 180, 0); .",
             "url": "https://tristancopley.github.io/dnhs-blog/jupyter/2020/09/08/solar.html",
@@ -89,7 +100,7 @@
     
   
     
-        ,"post8": {
+        ,"post9": {
             "title": "09/06 Ticket",
             "content": "SCORED BY AKHIL 2.7+ POINTS OF 3 | 2.7/3 FINAL SCORE . Week 2 Using Objects . Week 2 Requirements . Sep 5, 2022 • 1 min read . Tickets . Code.org . Java Using Objects and PBL design | Extra! | Code.org | . Completion through lesson 15 . . Java Using Objects and PBL design . Build a Console GUI focused on Java Math Class: LINK . Extra! . Completing solar system simulation (Used real world data and physics) (Not console app but imbedded in website) .",
             "url": "https://tristancopley.github.io/dnhs-blog/markdown/2020/09/06/ticketweek3.html",
@@ -100,7 +111,7 @@
     
   
     
-        ,"post9": {
+        ,"post10": {
             "title": "08/29 Ticket",
             "content": "SCORED BY AKHIL 2.7 POINTS OF 3 | 2.7/3 FINAL SCORE . Did extra work with very nice background but was missing college board learning notes | . Points will be awarded on these three key elements . Seeing that you understand how to use Code.org and that you used it to complement your learning on primitives. Up to Lesson 5 in the OOP assignment. Productive Blogging Create a Jupyter Notebook(s) using IJava kernel and that you could use it to capture key learning on Primitives. Create a Jupyter Notebook using Bash and that you could use it to show that you have all the key tools installed. This should also be a Blog for your own personal memory. Each student captures information in Fastpages thinking … how they are going to capture information that will grow to 10 college board units … how they will recognize something as PBL vs College Board. Presentation of Results at Monday meeting. Turn in of Review Ticket (Issue or Fastpages) will be by comment on Fastpages blog: https://nighthawkcoders.github.io/APCSA/techtalk/fastpages (Links to an external site.). See Slack for team instructions . Canvas Requirements . Productive Blogging . Create a Jupyter Notebook(s) using IJava to capture key learning on Primitives: LINK | Create a Jupyter Notebook using Bash to show that you have all the key tools installed: LINK | Capture information that will grow to 10 college board units: LINK Code.org . . Extra! . | Created a number averager. It takes in how ever many numbers you want, and it will then output the average. | Link to calculator | Tristan’s CSA Blog | .",
             "url": "https://tristancopley.github.io/dnhs-blog/markdown/2020/08/29/ticket.html",
@@ -111,7 +122,7 @@
     
   
     
-        ,"post10": {
+        ,"post11": {
             "title": "Checks for installations",
             "content": "python --version python2 --version python3 --version conda --version jupyter --version jupyter kernelspec list . Python 3.9.12 Python 2.7.18 Python 3.9.12 conda 4.13.0 Selected Jupyter core packages... IPython : 8.2.0 ipykernel : 6.9.1 ipywidgets : 7.6.5 jupyter_client : 6.1.12 jupyter_core : 4.9.2 jupyter_server : 1.13.5 jupyterlab : 3.3.2 nbclient : 0.5.13 nbconvert : 6.4.4 nbformat : 5.3.0 notebook : 6.4.8 qtconsole : 5.3.0 traitlets : 5.1.1 Available kernels: python3912jvsc74a57bd00a5aca3dd4806e9dff1f4f9e908a527b197091f2275dd8883ea66601e4d4e36e /Users/tristancopley/.vscode/extensions/ms-toolsai.jupyter-2022.7.1102252217/temp/jupyter/kernels/python3912jvsc74a57bd00a5aca3dd4806e9dff1f4f9e908a527b197091f2275dd8883ea66601e4d4e36e bash /Users/tristancopley/Library/Jupyter/kernels/bash java /Users/tristancopley/Library/Jupyter/kernels/java javascript /Users/tristancopley/Library/Jupyter/kernels/javascript python3 /Users/tristancopley/opt/anaconda3/share/jupyter/kernels/python3 .",
             "url": "https://tristancopley.github.io/dnhs-blog/jupyter/2020/08/29/checks.html",
@@ -122,7 +133,7 @@
     
   
     
-        ,"post11": {
+        ,"post12": {
             "title": "Week0",
             "content": "I like men .",
             "url": "https://tristancopley.github.io/dnhs-blog/2020/08/19/week0.html",
