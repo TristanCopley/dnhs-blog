@@ -3,6 +3,7 @@ toc: true
 layout: post
 description: An example for custom solar system code.
 categories: [markdown]
+image: images/solar.png
 title: Example Solar System Page
 ---
 <script type="module" defer>
