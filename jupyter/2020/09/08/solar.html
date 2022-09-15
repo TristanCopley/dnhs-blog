@@ -81,7 +81,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      4 min read
+      5 min read
     
 </span></p>
 
@@ -329,8 +329,8 @@ window.onload = wrap_img;
 
 <p><br></p>
 
-<p><b>Removing the GUI (top-right control menu)</b></p>
-
+<p><b>Removing the GUI (top-right control menu)</b>
+Pretty straightforward, this following code snippet just removes the GUI in the top-right.</p>
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="c1">// Deletes the GUI</span>
 <span class="nx">gui</span><span class="p">.</span><span class="nx">destroy</span><span class="p">();</span>
@@ -339,8 +339,8 @@ window.onload = wrap_img;
 
 <p><br></p>
 
-<p><b>Adjust start position of camera</b></p>
-
+<p><b>Adjust start position of camera</b>
+Adjust the camera position to get a better starting angle. This is especially useful for using the solar sytem as your background, as you are unable to rotate the scene manually.</p>
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="c1">// Changes x, y and z position of the camera. Camera looks to the first astronimal body you add</span>
 
@@ -352,9 +352,11 @@ window.onload = wrap_img;
 
 <p><b>Adjusting constants</b></p>
 
-<p>The simSpeed constant is the slider in the GUI, it dictates the speed of the simulation.
-The gravity constant is the universal graavitational constant, not exactly sure what happens when you mess with it, but you can.
-The scale of the simulation. The current scale is pretty good, but if you really want to you can mess with it.</p>
+<p>The simSpeed constant is the slider in the GUI, it dictates the speed of the simulation.</p>
+
+<p>The gravity constant is the universal graavitational constant, not exactly sure what happens when you mess with it, but you can.</p>
+
+<p>The scale of the simulation. The current scale is pretty good, but if you really want to you can mess with it.</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="c1">// Three constants you can alter manually</span>
