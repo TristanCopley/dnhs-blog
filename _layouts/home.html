@@ -148,4 +148,27 @@ layout: default
 
     end();
   </script>
+  <script type='module'>
+
+    let popoutWrapper = document.createElement("div");
+    popoutWrapper.id = 'popoutWrapper';
+    document.getElementsByTagName("body")[0].appendChild(popoutWrapper);
+
+    let wordGridWrapper = document.createElement("div");
+    wordGridWrapper.id = 'wordGridWrapper';
+    document.getElementById('popoutWrapper').appendChild(wordGridWrapper);
+
+    let codeword = document.createElement("div");
+    codeword.id = 'codeword';
+    codeword.innerHTML = '<span > Your code is <thecode> ANIMAL </thecode> </span>'
+    document.getElementById('popoutWrapper').appendChild(codeword);
+
+    let header = document.createElement("div");
+    header.id = 'codewordheader';
+    header.innerHTML = 'The title is TITLE'
+    document.getElementById('popoutWrapper').appendChild(codeword);
+
+
+
+</script>
 </div>
