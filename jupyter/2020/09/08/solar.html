@@ -327,6 +327,48 @@ window.onload = wrap_img;
 
 </code></pre></div></div>
 
+<p><br></p>
+
+<p><b>Removing the GUI (top-right control menu)</b></p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1">// Deletes the GUI</span>
+<span class="nx">gui</span><span class="p">.</span><span class="nx">destroy</span><span class="p">();</span>
+
+</code></pre></div></div>
+
+<p><br></p>
+
+<p><b>Adjust start position of camera</b></p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1">// Changes x, y and z position of the camera. Camera looks to the first astronimal body you add</span>
+
+<span class="nx">camera</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="kd">set</span><span class="p">(</span><span class="o">-</span><span class="mi">150</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">270</span><span class="p">);</span>
+
+</code></pre></div></div>
+
+<p><br></p>
+
+<p><b>Adjusting constants</b></p>
+
+<p>The simSpeed constant is the slider in the GUI, it dictates the speed of the simulation.
+The gravity constant is the universal graavitational constant, not exactly sure what happens when you mess with it, but you can.
+The scale of the simulation. The current scale is pretty good, but if you really want to you can mess with it.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1">// Three constants you can alter manually</span>
+
+<span class="nx">constants</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="na">simSpeed</span><span class="p">:</span> <span class="mi">371</span><span class="p">,</span>
+    <span class="na">gravity</span><span class="p">:</span> <span class="mi">66743</span><span class="nx">e</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span>
+    <span class="na">scale</span><span class="p">:</span> <span class="mi">3</span><span class="nx">e</span><span class="o">-</span><span class="mi">10</span>
+
+<span class="p">}</span>
+
+</code></pre></div></div>
+
 
   </div><!-- from https://github.com/utterance/utterances -->
 <script src="https://utteranc.es/client.js"
