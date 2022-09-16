@@ -68,10 +68,10 @@
   
     
         ,"post6": {
-            "title": "Title",
+            "title": "Java Example of primitives",
             "content": "// java style to import library import java.util.Scanner; // class must alway have 1st letter as uppercase, CamelCase is Java Class convention public class ScanPrimitives { public static void main(String[] args) { Scanner input; // primitive int input = new Scanner(System.in); System.out.print(&quot;Enter an integer: &quot;); try { int sampleInputInt = input.nextInt(); System.out.println(sampleInputInt); } catch (Exception e) { // if not an integer System.out.println(&quot;Not an integer (form like 159), &quot; + e); } input.close(); // primitive double input = new Scanner(System.in); System.out.print(&quot;Enter a double: &quot;); try { double sampleInputDouble = input.nextDouble(); System.out.println(sampleInputDouble); } catch (Exception e) { // if not a number System.out.println(&quot;Not an double (form like 9.99), &quot; + e); } input.close(); // primitive boolean input = new Scanner(System.in); System.out.print(&quot;Enter a boolean: &quot;); try { boolean sampleInputBoolean = input.nextBoolean(); System.out.println(sampleInputBoolean); } catch (Exception e) { // if not true or false System.out.println(&quot;Not an boolean (true or false), &quot; + e); } input.close(); // wrapper class String input = new Scanner(System.in); System.out.print(&quot;Enter a String: &quot;); try { String sampleInputString = input.nextLine(); System.out.println(sampleInputString); } catch (Exception e) { // this may never happen System.out.println(&quot;Not an String, &quot; + e); } input.close(); } } ScanPrimitives.main(null); . Enter an integer: 9 Enter a double: 9.1 Enter a boolean: true Enter a String: Things .",
-            "url": "https://tristancopley.github.io/dnhs-blog/2022/08/28/primitives.html",
-            "relUrl": "/2022/08/28/primitives.html",
+            "url": "https://tristancopley.github.io/dnhs-blog/jupyter/2022/08/28/primitives.html",
+            "relUrl": "/jupyter/2022/08/28/primitives.html",
             "date": " • Aug 28, 2022"
         }
         
@@ -101,6 +101,17 @@
   
     
         ,"post9": {
+            "title": "Monkey Monkey Monkey",
+            "content": "class MonkeyLoop { String [][] monkeys; String [][] words; public MonkeyLoop() { words = new String[][]{ {&quot;Five little monkeys jumping on the bed,&quot;, &quot;One fell down and bumped his head,&quot;, &quot;Mama called the doctor and the doctor said,&quot;, &quot;No more monkeys jumping on the bed!&quot;}, {&quot;Four little monkeys jumping on the bed,&quot;, &quot;One fell down and bumped his head,&quot;, &quot;Mama called the doctor and the doctor said,&quot;, &quot;No more monkeys jumping on the bed!&quot;}, {&quot;Three little monkeys jumping on the bed,&quot;, &quot;One fell down and bumped her head,&quot;, &quot;Mama called the doctor and the doctor said,&quot;, &quot;No more monkeys jumping on the bed!&quot;}, {&quot;Two little monkeys jumping on the bed,&quot;, &quot;One fell down and bumped his head,&quot;, &quot;Mama called the doctor and the doctor said,&quot;, &quot;No more monkeys jumping on the bed!&quot;}, {&quot;One little monkey jumping on the bed,&quot;, &quot;She fell down and bumped her head,&quot;, &quot;Mama called the doctor and the doctor said,&quot;, &quot;Put those monkeys back to bed!&quot;} }; monkeys = new String[][]{ { &quot;ʕง ͠° ͟ل͜ ͡°)ʔ &quot;, &quot; _⏄_/ &quot;, &quot; --0-- &quot;, &quot; ⎛ ⎞ &quot; }, { &quot; ʕ༼ ◕_◕ ༽ʔ&quot;, &quot; _⎏_/ &quot;, &quot; ++1++ &quot;, &quot; ⌋ ⌊ &quot; }, { &quot; ʕ(▀ ⍡ ▀)ʔ&quot;, &quot; _⎐_/ &quot;, &quot; &lt;-2-&gt; &quot;, &quot; 〈 〉 &quot; }, { &quot;ʕ ͡° ͜ʖ ° ͡ʔ&quot;, &quot; _⍾_/ &quot;, &quot; ==3== &quot;, &quot; _/ _ &quot; }, { &quot; (◕‿◕✿) &quot;, &quot; _⍾_/ &quot;, &quot; ==4== &quot;, &quot; _/ _ &quot; }, }; } public void printPoem() { System.out.println(); System.out.println(&quot;Monkey Jumpers Poem in Java Loopy&quot;); System.out.println(); int monkeyCount = monkeys.length; for (int i = monkeyCount; i &gt;= 1; i--) { for(int wordcol = 0; wordcol &lt; 3; wordcol++) { System.out.println(words[5-i][wordcol] + &quot;&quot;); } for (int col = 0; col &lt; monkeys[col].length; col++) { //cycles through each row of the monkeys /*cycles through rows to print each monkey&#39;s part by part, will eventually print entire row*/ for (int row = 0; row &lt; monkeyCount; row++) { // prints specific part of the monkey from the column System.out.print(monkeys[row][col] + &quot; &quot;); System.out.print(&quot; t&quot;); } System.out.println(); } System.out.println(); monkeyCount -= 1; } System.out.println(&quot;No more monkeys jumping on the bed&quot;); System.out.println(&quot;0000000000000000000000000000000000&quot;); System.out.println(&quot; THE END &quot;); } public static void main(String[] args) { new MonkeyLoop().printPoem(); } } MonkeyLoop.main(null); . Monkey Jumpers Poem in Java Loopy Five little monkeys jumping on the bed, One fell down and bumped his head, Mama called the doctor and the doctor said, ʕง ͠° ͟ل͜ ͡°)ʔ ʕ༼ ◕_◕ ༽ʔ ʕ(▀ ⍡ ▀)ʔ ʕ ͡° ͜ʖ ° ͡ʔ (◕‿◕✿) _⏄_/ _⎏_/ _⎐_/ _⍾_/ _⍾_/ --0-- ++1++ &lt;-2-&gt; ==3== ==4== ⎛ ⎞ ⌋ ⌊ 〈 〉 _/ _ _/ _ Four little monkeys jumping on the bed, One fell down and bumped his head, Mama called the doctor and the doctor said, ʕง ͠° ͟ل͜ ͡°)ʔ ʕ༼ ◕_◕ ༽ʔ ʕ(▀ ⍡ ▀)ʔ ʕ ͡° ͜ʖ ° ͡ʔ _⏄_/ _⎏_/ _⎐_/ _⍾_/ --0-- ++1++ &lt;-2-&gt; ==3== ⎛ ⎞ ⌋ ⌊ 〈 〉 _/ _ Three little monkeys jumping on the bed, One fell down and bumped her head, Mama called the doctor and the doctor said, ʕง ͠° ͟ل͜ ͡°)ʔ ʕ༼ ◕_◕ ༽ʔ ʕ(▀ ⍡ ▀)ʔ _⏄_/ _⎏_/ _⎐_/ --0-- ++1++ &lt;-2-&gt; ⎛ ⎞ ⌋ ⌊ 〈 〉 Two little monkeys jumping on the bed, One fell down and bumped his head, Mama called the doctor and the doctor said, ʕง ͠° ͟ل͜ ͡°)ʔ ʕ༼ ◕_◕ ༽ʔ _⏄_/ _⎏_/ --0-- ++1++ ⎛ ⎞ ⌋ ⌊ One little monkey jumping on the bed, She fell down and bumped her head, Mama called the doctor and the doctor said, ʕง ͠° ͟ل͜ ͡°)ʔ _⏄_/ --0-- ⎛ ⎞ No more monkeys jumping on the bed 0000000000000000000000000000000000 THE END .",
+            "url": "https://tristancopley.github.io/dnhs-blog/jupyter/2020/09/16/monkey.html",
+            "relUrl": "/jupyter/2020/09/16/monkey.html",
+            "date": " • Sep 16, 2020"
+        }
+        
+    
+  
+    
+        ,"post10": {
             "title": "09/06 Ticket",
             "content": "SCORED BY AKHIL 2.7+ POINTS OF 3 | 2.7/3 FINAL SCORE . Week 2 Using Objects . Week 2 Requirements . Sep 5, 2022 • 1 min read . Tickets . Code.org . Java Using Objects and PBL design | Extra! | Code.org | . Completion through lesson 15 . . Java Using Objects and PBL design . Build a Console GUI focused on Java Math Class: LINK . Extra! . Completing solar system simulation (Used real world data and physics) (Not console app but imbedded in website) .",
             "url": "https://tristancopley.github.io/dnhs-blog/markdown/2020/09/06/ticketweek3.html",
@@ -111,7 +122,7 @@
     
   
     
-        ,"post10": {
+        ,"post11": {
             "title": "08/29 Ticket",
             "content": "SCORED BY AKHIL 2.7 POINTS OF 3 | 2.7/3 FINAL SCORE . Did extra work with very nice background but was missing college board learning notes | . Points will be awarded on these three key elements . Seeing that you understand how to use Code.org and that you used it to complement your learning on primitives. Up to Lesson 5 in the OOP assignment. Productive Blogging Create a Jupyter Notebook(s) using IJava kernel and that you could use it to capture key learning on Primitives. Create a Jupyter Notebook using Bash and that you could use it to show that you have all the key tools installed. This should also be a Blog for your own personal memory. Each student captures information in Fastpages thinking … how they are going to capture information that will grow to 10 college board units … how they will recognize something as PBL vs College Board. Presentation of Results at Monday meeting. Turn in of Review Ticket (Issue or Fastpages) will be by comment on Fastpages blog: https://nighthawkcoders.github.io/APCSA/techtalk/fastpages (Links to an external site.). See Slack for team instructions . Canvas Requirements . Productive Blogging . Create a Jupyter Notebook(s) using IJava to capture key learning on Primitives: LINK | Create a Jupyter Notebook using Bash to show that you have all the key tools installed: LINK | Capture information that will grow to 10 college board units: LINK Code.org . . Extra! . | Created a number averager. It takes in how ever many numbers you want, and it will then output the average. | Link to calculator | Tristan’s CSA Blog | .",
             "url": "https://tristancopley.github.io/dnhs-blog/markdown/2020/08/29/ticket.html",
@@ -122,7 +133,7 @@
     
   
     
-        ,"post11": {
+        ,"post12": {
             "title": "Checks for installations",
             "content": "python --version python2 --version python3 --version conda --version jupyter --version jupyter kernelspec list . Python 3.9.12 Python 2.7.18 Python 3.9.12 conda 4.13.0 Selected Jupyter core packages... IPython : 8.2.0 ipykernel : 6.9.1 ipywidgets : 7.6.5 jupyter_client : 6.1.12 jupyter_core : 4.9.2 jupyter_server : 1.13.5 jupyterlab : 3.3.2 nbclient : 0.5.13 nbconvert : 6.4.4 nbformat : 5.3.0 notebook : 6.4.8 qtconsole : 5.3.0 traitlets : 5.1.1 Available kernels: python3912jvsc74a57bd00a5aca3dd4806e9dff1f4f9e908a527b197091f2275dd8883ea66601e4d4e36e /Users/tristancopley/.vscode/extensions/ms-toolsai.jupyter-2022.7.1102252217/temp/jupyter/kernels/python3912jvsc74a57bd00a5aca3dd4806e9dff1f4f9e908a527b197091f2275dd8883ea66601e4d4e36e bash /Users/tristancopley/Library/Jupyter/kernels/bash java /Users/tristancopley/Library/Jupyter/kernels/java javascript /Users/tristancopley/Library/Jupyter/kernels/javascript python3 /Users/tristancopley/opt/anaconda3/share/jupyter/kernels/python3 .",
             "url": "https://tristancopley.github.io/dnhs-blog/jupyter/2020/08/29/checks.html",
@@ -133,7 +144,7 @@
     
   
     
-        ,"post12": {
+        ,"post13": {
             "title": "Week0",
             "content": "I like men .",
             "url": "https://tristancopley.github.io/dnhs-blog/2020/08/19/week0.html",
