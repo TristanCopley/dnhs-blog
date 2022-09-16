@@ -171,4 +171,90 @@ layout: default
 
 
 </script>
+
+<style>
+
+  html, body {
+
+      background-color: black;
+
+  }
+
+  #popoutWrapper {
+
+      position: fixed;
+      right: -23rem;
+      top: 7rem;
+      width: 29rem;
+      height: 28rem;
+      background-color: rgba(196, 212, 219, 0.159);
+      border-radius: 1rem 0 0 1rem;
+      animation: popin 0.11s cubic-bezier(.93,.16,.4,1.23) 0.15s forwards;
+      display: grid;
+      grid-template-rows: repeat(5, 1fr);
+      grid-template-columns: repeat(3, 1fr) 2rem;
+
+  }
+
+  span {
+
+      vertical-align: bottom;
+      text-align: center;
+      
+
+  }
+
+  #wordGridWrapper {
+
+      grid-column: 1 / 4;
+      grid-row: 2 / 5;
+      display: grid;
+      grid-template-rows: repeat(3, 1fr);
+      grid-template-columns: repeat(3, 1fr);
+
+  }
+
+  #codeword {
+
+      grid-column: 1 / 4;
+      grid-row: 5 / 6;
+      text-align: center;
+      color: rgb(246, 246, 246);
+      font-weight: bold;
+      font-size: 1.4rem;
+      font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+  }
+
+  #codewordheader {
+
+      grid-column: 1 / 4;
+      grid-row: 1 / 2;
+      text-align: center;
+      color: rgb(246, 246, 246);
+      font-weight: bold;
+      font-size: 1.4rem;
+      font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+  }
+
+  thecode {
+
+      color:lightblue;
+
+  }
+
+  @keyframes popin {
+      0%{right: -23rem;}
+      100%{right:0rem;}
+  }
+
+
+</style>
 </div>
