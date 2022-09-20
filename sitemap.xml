@@ -17,10 +17,6 @@
 <lastmod>2020-09-06T00:00:00-05:00</lastmod>
 </url>
 <url>
-<loc>https://tristancopley.github.io/dnhs-blog/jupyter/2020/09/16/monkey.html</loc>
-<lastmod>2020-09-16T00:00:00-05:00</lastmod>
-</url>
-<url>
 <loc>https://tristancopley.github.io/dnhs-blog/jupyter/2022/08/22/hellojava.html</loc>
 <lastmod>2022-08-22T00:00:00-05:00</lastmod>
 </url>
@@ -29,7 +25,7 @@
 <lastmod>2022-08-22T00:00:00-05:00</lastmod>
 </url>
 <url>
-<loc>https://tristancopley.github.io/dnhs-blog/2022/08/28/primitives.html</loc>
+<loc>https://tristancopley.github.io/dnhs-blog/jupyter/2022/08/28/primitives.html</loc>
 <lastmod>2022-08-28T00:00:00-05:00</lastmod>
 </url>
 <url>
@@ -49,8 +45,16 @@
 <lastmod>2022-09-11T00:00:00-05:00</lastmod>
 </url>
 <url>
+<loc>https://tristancopley.github.io/dnhs-blog/jupyter/2022/09/16/monkey.html</loc>
+<lastmod>2022-09-16T00:00:00-05:00</lastmod>
+</url>
+<url>
 <loc>https://tristancopley.github.io/dnhs-blog/jupyter/2022/09/17/csafrq1.html</loc>
 <lastmod>2022-09-17T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>https://tristancopley.github.io/dnhs-blog/markdown/2022/09/20/week4.html</loc>
+<lastmod>2022-09-20T00:00:00-05:00</lastmod>
 </url>
 <url>
 <loc>https://tristancopley.github.io/dnhs-blog/markdown/2030/09/07/solarproj.html</loc>
@@ -74,5 +78,8 @@
 </url>
 <url>
 <loc>https://tristancopley.github.io/dnhs-blog/categories/</loc>
+</url>
+<url>
+<loc>https://tristancopley.github.io/dnhs-blog/page2/</loc>
 </url>
 </urlset>
