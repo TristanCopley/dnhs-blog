@@ -405,7 +405,7 @@ window.onload = wrap_img;
        let dailyword = document.getElementsByClassName('cw-footer-word')[0].getElementsByTagName('p')[0].innerHTML;
        console.log(document.styleSheets[0])
        fitText(document.getElementsByClassName('cw-footer-word')[0], dailyword);
-       document.styleSheets[0].cssRules[14].style.animation = `animated-text ${Math.ceil(Math.sqrt(dailyword.length + 1))}s steps(${Math.floor(dailyword.length)},end) 2s 1 normal both, animated-cursor 600ms steps(${Math.floor(dailyword.length)},end) infinite`
+       document.styleSheets[0].cssRules[159].style.animation = `animated-text ${Math.ceil(Math.sqrt(dailyword.length + 1))}s steps(${Math.floor(dailyword.length)},end) 2s 1 normal both, animated-cursor 600ms steps(${Math.floor(dailyword.length)},end) infinite`
  
        let width = document.getElementsByClassName('cw-footer-word')[0].style['font-size'] === '25.6px' ? `${getTextWidth(dailyword)}px` : '90px';
  
