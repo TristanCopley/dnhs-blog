@@ -3,225 +3,318 @@ layout: default
 ---
 
 <style>
- 
-  html, body {
-      background-color: black;
-      width: 100%;
-  }
-  .cw-wrapper {
-      position: fixed;
-      right: -27rem;
-      top: 7rem;
-      width: 26rem;
-      height: 26rem;
-      animation: cw-popin 1.1s cubic-bezier(.93,.16,.4,1.23) 0.12s forwards;
-      display: grid;
-      grid-template-rows: repeat(7, 1fr);
-      grid-template-columns: repeat(4, 1fr) 2rem;
-      background-color: red;
-      font-family: monospace, 'Helvetica Neue', Arial, sans-serif;
-      cursor: default;
-      overflow: hidden;
-  }
-  .cw-title-space {
-      grid-column: 1 / span 2;
-      grid-row: 1 / 2;
-      background-color: blue;
-      overflow: hidden;
-  }
-  .cw-title {
-    position: relative;
-    justify-content: center;
-    align-items: center;
-    background-color: orange;
-    display: flex;
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: white;
-    height: 140%;
-    animation: cw-title-scroll 9s cubic-bezier(.5,-0.7,.5,1.7) 4s infinite alternate;
-    bottom: 20%;
-  }
-  .cw-clock {
-    position: relative;
-    background-color: blue;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    font-size: 1.3rem;
-    font-weight: bold;
-    color: white;
-    height: 140%;
-    animation: cw-title-scroll 9s cubic-bezier(.5,-0.7,.5,1.7) 4s infinite alternate;
-    bottom: 20%;
-  }
-  .cw-icons {
-    grid-column: 3 / span 2;
-    grid-row: 1 / 2;
-    background-color: cyan;
-    display: grid;
-    grid-template-rows: 1fr;
-    grid-template-columns: 2rem repeat(3, 1fr) 0.5rem;
-  }
-  .cw-word {
-    background-color: black;
-    color: red;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1rem;
-    transition-duration: 0.2s;
-    border: red solid 0px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  .cw-word:hover {
-    transform: scale(1.14);
-    border: red solid 6px;
-  }
-  .cw-grid {
-    grid-row: 2 / 7;
-    grid-column: 1 / 5;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    padding: 0.5rem;
-    grid-gap: 0.5rem;
-    background-color: lime;
-  }
-  .cw-footer {
-    grid-column: 1 / span 3;
-    grid-row: 7 / 8;
-    background-color: blue;
-    overflow: hidden;
-    display:grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 1fr;
-    font-weight: bold;
-  }
-  .cw-footer-word {
-    height: 100%;
-    width: 100%;
-    grid-column: 1 / span 2;
-    grid-row: 1 / 2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: yellow;
-    font-size: 1rem;
-  }
-  .cw-footer-number {
-    width: 100%;
-    height: 100%;
-    grid-column: 3 / span 1;
-    grid-row: 1 / 2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: aquamarine;
-    font-size: 1.6rem;
-  }
-  .cw-icon {
-   justify-self: center;
-   align-self: center;
-   transition-duration: 0.4s;
-   transform: rotate(0deg) scale(2);
-   cursor: pointer;
-  }
+  :root {
 
-  .cw-icon:hover {
-   transform: rotate(360deg) scale(2.5);
+   --cw-main: rgb(225, 225, 225);
+   --cw-header: rgb(225, 225, 225);
+   --cw-footer: rgb(225, 225, 225);
+   --cw-title: rgb(205, 205, 205);
+   --cw-clock: rgba(100,100,100,1);
+   --cw-clock-text: rgb(205, 205, 205);
+   --cw-item: rgb(205, 205, 205);
+   --cw-item-border: rgba(100,100,100,1);
+   --cw-text: rgba(100,100,100,1);
+   --cw-border: rgba(100,100,100,1);
+   --cw-text-shadow: rgb(225, 225, 225);
+
   }
+   html, body {
+     background-color: black;
+     width: 100%;
+   }
+   .cw-wrapper {
+     position: fixed;
+     right: -25rem;
+     top: 7rem;
+     width: 26rem;
+     height: 26rem;
+     animation: cw-popin 1.1s cubic-bezier(.93,.16,.4,1.23) 0.12s forwards;
+     display: grid;
+     grid-template-rows: repeat(7, 1fr);
+     grid-template-columns: repeat(4, 1fr);
+     background-color: var(--cw-main);
+     font-family: monospace, 'Helvetica Neue', Arial, sans-serif;
+     cursor: default;
+     user-select: none;
+   }
+   .cw-wrapper::after {
+     content: ' ';
+     position: absolute;
+     width: inherit;
+     height: inherit;
+     z-index: 3;
+     outline: solid 8px var(--cw-border);
+     outline-offset: -4px;
+     pointer-events: none;
 
-  @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
-
-    p {
-
-     border-right: solid 3px white;
-     white-space: nowrap;
+   }
+   .cw-title-space {
+     grid-column: 1 / span 2;
+     grid-row: 1 / 2;
      overflow: hidden;
-     margin: 0;
-     padding: 0;
+     background-color: var(--cw-header);
+   }
+   .cw-title {
+     position: relative;
+     justify-content: center;
+     align-items: center;
+     display: flex;
+     font-size: 1.8rem;
+     font-weight: bold;
+     color: var(--cw-text);
+     height: 140%;
+     animation: cw-title-scroll 9s cubic-bezier(.5,-0.7,.5,1.7) 4s infinite alternate;
+     bottom: 20%;
+     background-color: var(--cw-title);
+   }
+   .cw-clock {
+     position: relative;
+     justify-content: center;
+     align-items: center;
+     display: flex;
+     font-size: 1.3rem;
+     font-weight: bold;
+     color: var(--cw-clock-text);
+     height: 140%;
+     animation: cw-title-scroll 9s cubic-bezier(.5,-0.7,.5,1.7) 4s infinite alternate;
+     bottom: 20%;
+     background-color: var(--cw-clock);
+   }
+   .cw-icons {
+     z-index: 1;
+     grid-column: 3 / span 2;
+     grid-row: 1 / 2;
+     display: grid;
+     grid-template-rows: 1fr;
+     grid-template-columns: 1rem repeat(3, 1fr) 1rem;
+     background-color: var(--cw-header);
+     outline: solid 8px var(--cw-border);
+     outline-offset: -4px;
+   }
+   .cw-word {
+     color: var(--cw-text);
+     background-color: var(--cw-item);
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     font-size: 1rem;
+     transition-duration: 0.2s;
+     border: var(--cw-item-border) solid 0px;
+     cursor: pointer;
+     font-weight: bold;
 
+   }
+   .cw-word:hover {
+    
+     transform: scaleX(1.12) scaleY(1.18);
+     border: var(--cw-item-border) solid 6px;
+     text-shadow: 0px 0.7em var(--cw-text-shadow), 0px -0.7em var(--cw-text-shadow);
+
+   }
+   .cw-grid {
+     z-index: 1;
+     outline: solid 8px var(--cw-border);
+     outline-offset: -4px;
+      overflow: hidden;
+     grid-row: 2 / 7;
+     grid-column: 1 / 5;
+     display: grid;
+     grid-template-columns: repeat(3, 1fr);
+     grid-template-rows: repeat(3, 1fr);
+     padding: 1rem;
+     grid-gap: 1rem;
+   }
+   .cw-footer {
+     grid-column: 1 / span 3;
+     grid-row: 7 / 8;
+     overflow: hidden;
+     display:grid;
+     grid-template-columns: repeat(4, 1fr);
+     grid-template-rows: 1fr;
+     font-weight: bold;
+     color: var(--cw-text);
+     background-color: var(--cw-header);
+   }
+   .cw-footer-word {
+     height: 100%;
+     width: 100%;
+     grid-column: 1 / span 3;
+     grid-row: 1 / 2;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     font-size: 1rem;
+     background-color: var(--cw-title);
+     outline: solid 8px var(--cw-border);
+     outline-offset: -4px;
+   }
+   .cw-icon {
+    justify-self: center;
+    align-self: center;
+    transition-duration: 0.4s;
+    transform: rotate(0deg) scale(1.9);
+    cursor: pointer;
+   }
+   .cw-icon:hover {
+    transform: rotate(360deg) scale(2.2);
+   }
+   @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
+     .cw-word-element {
+      border-right: solid 3px white;
+      white-space: nowrap;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+     }
+
+     .cw-heart-counter {
+
+       position: absolute;
+       width: 6rem;
+       height: 59.43px;
+       right: 72px;
+       justify-content: center;
+       align-items: center;
+       display: flex;
+       font-size: 1.8rem;
+       font-weight: bold;
+       color: var(--cw-text);
+       top: -2px;
+
+     }
+
+     .cw-heart-wrapper {
+
+      grid-column: 4 / span 1;
+      grid-row: 7 / 8;
+      display: grid;
+      grid-template-rows: 1fr;
+      grid-template-columns: 1fr 59px 1rem;
+      background-color: var(--cw-footer);
+      position: relative;
+
+     }
+
+     .cw-heart-ico {
+       display: flex;
+      justify-self: center;
+      align-self: center;
+      justify-content: center;
+      align-content: center;
+      transition-duration: 0.2s;
+      transform: rotate(0) scale(1.9);
+      cursor: pointer;
+      z-index: 3;
+
+     }
+
+     .cw-heart-ico:hover {
+
+       transform: scale(2.3);
+
+      }
+
+      .cw-heart-ico:active {
+
+       transform: scale(2.9);
+       font-variation-settings: 'FILL' 1;
+       color: red;
+
+       }
+     /* cursor animations */
+     @keyframes animated-cursor{
+      from {border-right-color: white;}
+      to {border-right-color: transparent;}
     }
-
-    /* cursor animations */
-    @keyframes animated-cursor{
-
-     from {border-right-color: white;}
-     to {border-right-color: transparent;}
-
-   }
-
-  @keyframes cw-popin {
-   0% {
+   @keyframes cw-popin {
+    0% {
      right: -27rem;
+    }
+    100% {
+     right: 2rem;
+    }
    }
-   100% {
-     right: -2rem;
-  
-   }
-  }
-   @keyframes cw-title-scroll {
+    @keyframes cw-title-scroll {
      0% {
-
        bottom: 20%;
-
      }
-
      45% {
-
        bottom: 20%;
-
      }
-
      55% {
-
-       bottom: 165%;
-
+       bottom: 160%;
      }
-
      100% {
-
-       bottom: 165%;
-
+       bottom: 160%;
      }
-  }
-  .material-symbols-outlined {
-    font-variation-settings:
-    'FILL' 0,
-    'wght' 700,
-    'GRAD' 0,
-    'opsz' 48
-  }
+   }
 
-</style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+   @keyframes cw-item-hover {
+     0% {
+       bottom: 20%;
+     }
+     25% {
+       bottom: 20%;
+     }
+     50% {
+       bottom: 160%;
+     }
+     75% {
+       bottom: 160%;
+     }
+     100% {
+       bottom: 100%;
+     }
+   }
+
+   .material-symbols-outlined {
+     color: var(--cw-item-border);
+     font-variation-settings:
+     'FILL' 0,
+     'wght' 700,
+     'GRAD' 0,
+     'opsz' 48
+   }
+
+   .cw-hearted {
+
+      font-variation-settings: 'FILL' 1;
+      color: red;
+
+   }
+ </style>
+ <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
 <body>
-  <div class="cw-wrapper">
-      <div class="cw-title-space">
-        <div class="cw-title">
-            <span>CODEWORDS</span>
+   <div class="cw-wrapper">
+       <div class="cw-title-space">
+         <div class="cw-title">
+             <span>CODEWORDS</span>
+         </div>
+         <div class="cw-clock">
+             <span>NEXT IN 03:23</span>
+         </div>
+       </div>
+       <div class="cw-icons">
+         <span></span>
+         <span class="material-symbols-outlined cw-icon cw-spin">help</span>
+         <span class="material-symbols-outlined cw-icon cw-spin">analytics</span>
+         <span class="material-symbols-outlined cw-icon cw-spin">settings</span>
+       </div>
+       <div class="cw-grid">
+       </div>
+       <div class="cw-footer">
+         <div class="cw-footer-word">
+             <p class='cw-word-element'>ELECTRONICS 3</p>
+         </div>
+       </div>
+       <div class="cw-heart-wrapper">
+          <span class="cw-heart-counter">1.23K</span>
+          <span></span>
+          <span class="material-symbols-outlined material-symbols-filled cw-heart-ico" onclick="document.getElementsByClassName('cw-heart-ico')[0].classList.add('cw-hearted');">favorite</span>
         </div>
-        <div class="cw-clock">
-            <span> NEXT IN 03:23 </span>
-        </div>
-      </div>
-      <div class="cw-icons">
-        <span></span>
-        <span class="material-symbols-outlined cw-icon">help</span>
-        <span class="material-symbols-outlined cw-icon">analytics</span>
-        <span class="material-symbols-outlined cw-icon">settings</span>
-      </div>
-      <div class="cw-grid">
-      </div>
-      <div class="cw-footer">
-        <div class="cw-footer-word">
-            <p>AKHIL</p>
-        </div>
-        <div class="cw-footer-number">3</div>
-      </div>
-  </div>
+   </div>
+
 <div class="home">
   {%- if page.title -%}
     <h1 class="page-heading">{{ page.title }}</h1>
@@ -298,61 +391,46 @@ layout: default
     {%- endif %}
 
   {%- endif -%}
-   <script type='module' defer>
-      console.log(document.styleSheets[0].cssRules);
-      console.log('updated');
-       import {words} from "https://tristancopley.github.io/dnhs-blog/images/json/words.js";
-       const wordLen = words.length;
+  <script type='module' defer>
+    document.cookie = `${'cw-sess'}=2fn0579; expires=${new Date(Date.now() + 12 * 1000)}; path=/; SameSite=None; Secure`;
+      import {words} from "https://tristancopley.github.io/dnhs-blog/images/json/words.js";
+      const wordLen = words.length;
+      // Fit text of daily code word
+      let dailyword = document.getElementsByClassName('cw-footer-word')[0].getElementsByTagName('p')[0].innerHTML;
+      console.log(document.styleSheets[0])
+      fitText(document.getElementsByClassName('cw-footer-word')[0], dailyword);
+      document.styleSheets[0].cssRules[15].style.animation = `animated-text ${1 + Math.floor(dailyword.length**0.3)}s steps(${Math.floor(dailyword.length)},end) 2s 1 normal both, animated-cursor 600ms steps(${Math.floor(dailyword.length)},end) infinite`
+      let width = document.getElementsByClassName('cw-footer-word')[0].style['font-size'] === '25.6px' ? `${getTextWidth(dailyword)}px` : '148px';
+      let style = document.createElement('style');
+      style.innerHTML = `@keyframes animated-text { \n  0% { width: 0; }\n  100% { width: ${width};\n}`
+      document.getElementsByTagName('head')[0].appendChild(style);
  
-       // Fit text of daily code word
-       let dailyword = document.getElementsByClassName('cw-footer-word')[0].getElementsByTagName('p')[0].innerHTML;
-       console.log(document.styleSheets[0])
-       fitText(document.getElementsByClassName('cw-footer-word')[0], dailyword);
-       document.styleSheets[0].cssRules[159].style.animation = `animated-text ${Math.ceil(Math.sqrt(dailyword.length + 1))}s steps(${Math.floor(dailyword.length)},end) 2s 1 normal both, animated-cursor 600ms steps(${Math.floor(dailyword.length)},end) infinite`
+      // Functions
+      function getTextWidth(text) {
+       const context = document.createElement("canvas").getContext("2d");
+       context.font = "25.6px monospace";
+       return Math.ceil(context.measureText(text).width);
+      }
+      function fitText(element, text) {
+       element.style['font-size'] = Math.min(Math.round(16 / (getTextWidth(text) / (element.clientWidth))), 25.6) + 'px';
+      }
  
-       let width = document.getElementsByClassName('cw-footer-word')[0].style['font-size'] === '25.6px' ? `${getTextWidth(dailyword)}px` : '90px';
+      // Fit text of grid words
+      for(let i = 0; i < 9; i++) {
+       const word = document.createElement('div');
+       word.id = 'cw-word-' + i;
+       word.classList.add('cw-word');
+       let wordWord = words[Math.floor(Math.random() * wordLen)]
+       word.innerHTML = wordWord;
  
-       let style = document.createElement('style');
-       style.innerHTML = `@keyframes animated-text { \n  0% { width: 0; }\n  100% { width: ${width};\n}`
-       document.getElementsByTagName('head')[0].appendChild(style);
-   
-       // Functions
-       function getTextWidth(text) {
- 
-        const context = document.createElement("canvas").getContext("2d");
-        context.font = "25.6px monospace";
-        return Math.ceil(context.measureText(text).width);
- 
-       }
- 
-       function fitText(element, text) {
- 
-        element.style['font-size'] = Math.min(Math.round(16 / (getTextWidth(text) / (element.clientWidth))), 25.6) + 'px';
- 
-       }
- 
-       // Fit text of grid words
-       for(let i = 0; i < 9; i++) {
- 
-        const word = document.createElement('div');
-        word.id = 'cw-word-' + i;
-        word.classList.add('cw-word');
-        word.innerHTML = words[Math.floor(Math.random() * wordLen)];
-        document.getElementsByClassName('cw-grid')[0].appendChild(word);
-        fitText(document.getElementById('cw-word-'+i), document.getElementById('cw-word-' + i).innerHTML);
- 
-       } 
- 
-       function animate() {
- 
-        let time = new Date();
-        document.getElementsByClassName('cw-clock')[0].innerHTML = ('NEXT IN '+String((24-time.getHours())).padStart(2, '0')+':'+String((60-time.getMinutes())).padStart(2, '0'));
- 
-        requestAnimationFrame( animate );
- 
-       }
- 
-       animate()
- 
- </script>
+       document.getElementsByClassName('cw-grid')[0].appendChild(word);
+       fitText(document.getElementById('cw-word-'+i), wordWord.substring(0, wordWord.length - 1));
+      }
+      function animate() {
+       let time = new Date();
+       document.getElementsByClassName('cw-clock')[0].innerHTML = ('NEXT IN '+String((24-time.getHours())).padStart(2, '0')+':'+String((60-time.getMinutes())).padStart(2, '0'));
+       requestAnimationFrame( animate );
+      }
+      animate()
+</script>
 </div>
