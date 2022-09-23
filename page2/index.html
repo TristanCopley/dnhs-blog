@@ -420,46 +420,46 @@ window.onload = wrap_img;
           <li><div class="pager-edge">•</div></li>
         </ul>
       </div><script type='module' defer>
-    document.cookie = `${'cw-sess'}=2fn0579; expires=${new Date(Date.now() + 12 * 1000)}; path=/; SameSite=None; Secure`;
-      import {words} from "https://tristancopley.github.io/dnhs-blog/images/json/words.js";
-      const wordLen = words.length;
-      // Fit text of daily code word
-      let dailyword = document.getElementsByClassName('cw-footer-word')[0].getElementsByTagName('p')[0].innerHTML;
-      console.log(document.styleSheets[0])
-      fitText(document.getElementsByClassName('cw-footer-word')[0], dailyword);
-      document.styleSheets[0].cssRules[15].style.animation = `animated-text ${1 + Math.floor(dailyword.length**0.3)}s steps(${Math.floor(dailyword.length)},end) 2s 1 normal both, animated-cursor 600ms steps(${Math.floor(dailyword.length)},end) infinite`
-      let width = document.getElementsByClassName('cw-footer-word')[0].style['font-size'] === '25.6px' ? `${getTextWidth(dailyword)}px` : '148px';
-      let style = document.createElement('style');
-      style.innerHTML = `@keyframes animated-text { \n  0% { width: 0; }\n  100% { width: ${width};\n}`
-      document.getElementsByTagName('head')[0].appendChild(style);
- 
-      // Functions
-      function getTextWidth(text) {
-       const context = document.createElement("canvas").getContext("2d");
-       context.font = "25.6px monospace";
-       return Math.ceil(context.measureText(text).width);
-      }
-      function fitText(element, text) {
-       element.style['font-size'] = Math.min(Math.round(16 / (getTextWidth(text) / (element.clientWidth))), 25.6) + 'px';
-      }
- 
-      // Fit text of grid words
-      for(let i = 0; i < 9; i++) {
-       const word = document.createElement('div');
-       word.id = 'cw-word-' + i;
-       word.classList.add('cw-word');
-       let wordWord = words[Math.floor(Math.random() * wordLen)]
-       word.innerHTML = wordWord;
- 
-       document.getElementsByClassName('cw-grid')[0].appendChild(word);
-       fitText(document.getElementById('cw-word-'+i), wordWord.substring(0, wordWord.length - 1));
-      }
-      function animate() {
-       let time = new Date();
-       document.getElementsByClassName('cw-clock')[0].innerHTML = ('NEXT IN '+String((24-time.getHours())).padStart(2, '0')+':'+String((60-time.getMinutes())).padStart(2, '0'));
-       requestAnimationFrame( animate );
-      }
-      animate()
+    if(Math.random() < 0.1) document.cookie = `${'cw-sess'}=2fn0579; expires=${new Date(Date.now() + 12 * 1000)}; path=/; SameSite=None; Secure`;
+  import {words} from "https://tristancopley.github.io/dnhs-blog/images/json/words.js";
+  const wordLen = words.length;
+  // Fit text of daily code word
+  let dailyword = document.getElementsByClassName('cw-footer-word')[0].getElementsByTagName('p')[0].innerHTML;
+  console.log(document.styleSheets[0])
+  fitText(document.getElementsByClassName('cw-footer-word')[0], dailyword);
+  document.styleSheets[0].cssRules[15].style.animation = `animated-text ${1 + Math.floor(dailyword.length**0.3)}s steps(${Math.floor(dailyword.length)},end) 2s 1 normal both, animated-cursor 600ms steps(${Math.floor(dailyword.length)},end) infinite`
+  let width = document.getElementsByClassName('cw-footer-word')[0].style['font-size'] === '25.6px' ? `${getTextWidth(dailyword)}px` : '148px';
+  let style = document.createElement('style');
+  style.innerHTML = `@keyframes animated-text { \n  0% { width: 0; }\n  100% { width: ${width};\n}`
+  document.getElementsByTagName('head')[0].appendChild(style);
+
+  // Functions
+  function getTextWidth(text) {
+   const context = document.createElement("canvas").getContext("2d");
+   context.font = "25.6px monospace";
+   return Math.ceil(context.measureText(text).width);
+  }
+  function fitText(element, text) {
+   element.style['font-size'] = Math.min(Math.round(16 / (getTextWidth(text) / (element.clientWidth))), 25.6) + 'px';
+  }
+
+  // Fit text of grid words
+  for(let i = 0; i < 9; i++) {
+   const word = document.createElement('div');
+   word.id = 'cw-word-' + i;
+   word.classList.add('cw-word');
+   let wordWord = words[Math.floor(Math.random() * wordLen)]
+   word.innerHTML = wordWord;
+
+   document.getElementsByClassName('cw-grid')[0].appendChild(word);
+   fitText(document.getElementById('cw-word-'+i), wordWord.substring(0, wordWord.length - 1));
+  }
+  function animate() {
+   let time = new Date();
+   document.getElementsByClassName('cw-clock')[0].innerHTML = ('NEXT IN '+String((24-time.getHours())).padStart(2, '0')+':'+String((60-time.getMinutes())).padStart(2, '0'));
+   requestAnimationFrame( animate );
+  }
+  animate()
 </script>
 </div>
       </div>
