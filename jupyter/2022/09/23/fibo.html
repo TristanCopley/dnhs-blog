@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Fibonacci Sequencing | fastpages</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Fibonacci Sequencing" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="An easy to use blogging platform with support for Jupyter Notebooks." />
+<meta property="og:description" content="An easy to use blogging platform with support for Jupyter Notebooks." />
+<link rel="canonical" href="https://tristancopley.github.io/dnhs-blog/jupyter/2022/09/23/fibo.html" />
+<meta property="og:url" content="https://tristancopley.github.io/dnhs-blog/jupyter/2022/09/23/fibo.html" />
+<meta property="og:site_name" content="fastpages" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-09-23T00:00:00-05:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Fibonacci Sequencing" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-09-23T00:00:00-05:00","datePublished":"2022-09-23T00:00:00-05:00","description":"An easy to use blogging platform with support for Jupyter Notebooks.","headline":"Fibonacci Sequencing","mainEntityOfPage":{"@type":"WebPage","@id":"https://tristancopley.github.io/dnhs-blog/jupyter/2022/09/23/fibo.html"},"url":"https://tristancopley.github.io/dnhs-blog/jupyter/2022/09/23/fibo.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/dnhs-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://tristancopley.github.io/dnhs-blog/feed.xml" title="fastpages" /><link rel="shortcut icon" type="image/x-icon" href="/dnhs-blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/dnhs-blog/">fastpages</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/dnhs-blog/about/">About Me</a><a class="page-link" href="/dnhs-blog/about/">About Me</a><a class="page-link" href="/dnhs-blog/search/">Search</a><a class="page-link" href="/dnhs-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Fibonacci Sequencing</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2022-09-23T00:00:00-05:00" itemprop="datePublished">
+        Sep 23, 2022
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      9 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/dnhs-blog/categories/#jupyter">jupyter</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-justify-center">
+          <div class="px-2">
+
+    <a href="https://github.com/TristanCopley/dnhs-blog/tree/master/_notebooks/2022-09-23-fibo.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/dnhs-blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/TristanCopley/dnhs-blog/master?filepath=_notebooks%2F2022-09-23-fibo.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/dnhs-blog/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/TristanCopley/dnhs-blog/blob/master/_notebooks/2022-09-23-fibo.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/dnhs-blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+          <div class="px-2">
+  <a href="https://deepnote.com/launch?url=https%3A%2F%2Fgithub.com%2FTristanCopley%2Fdnhs-blog%2Fblob%2Fmaster%2F_notebooks%2F2022-09-23-fibo.ipynb" target="_blank">
+      <img class="notebook-badge-image" src="/dnhs-blog/assets/badges/deepnote.svg" alt="Launch in Deepnote"/>
+  </a>
+</div>
+
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul id="toc" class="section-nav">
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2022-09-23-fibo.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-java"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> * Creator: Nighthawk Coding Society</span>
+<span class="cm"> * Mini Lab Name: Fibonacci sequence, featuring a Stream Algorithm</span>
+<span class="cm"> * </span>
+<span class="cm"> */</span>
+
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="p">;</span>  
+<span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.util.stream.Stream</span><span class="p">;</span>
+
+<span class="cm">/* Objective will require changing to abstract class with one or more abstract methods below */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Fibo</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">name</span><span class="p">;</span>  <span class="c1">// name or title of method</span>
+    <span class="kt">int</span> <span class="n">size</span><span class="p">;</span>  <span class="c1">// nth sequence</span>
+    <span class="kt">int</span> <span class="n">hashID</span><span class="p">;</span>  <span class="c1">// counter for hashIDs in hash map</span>
+    <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span> <span class="n">list</span><span class="p">;</span>   <span class="c1">// captures current Fibonacci sequence</span>
+    <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">Integer</span><span class="p">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">hash</span><span class="p">;</span>  <span class="c1">// captures each sequence leading to final result</span>
+
+    <span class="cm">/*</span>
+<span class="cm">     Zero parameter constructor uses Telescoping technique to allow setting of the required value nth</span>
+<span class="cm">     @param: none</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="nf">Fibo</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span> <span class="c1">// telescope to avoid code duplication, using default as 20</span>
+    <span class="p">}</span>
+
+    <span class="cm">/*</span>
+<span class="cm">     Construct the nth fibonacci number</span>
+<span class="cm">     @param: nth number, the value is constrained to 92 because of overflow in a long</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="nf">Fibo</span><span class="p">(</span><span class="kt">int</span> <span class="n">nth</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="na">size</span> <span class="o">=</span> <span class="n">nth</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="na">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="na">hashID</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="na">hash</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+        <span class="c1">//initialize fibonacci and time mvc</span>
+        <span class="k">this</span><span class="p">.</span><span class="na">init</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="cm">/*</span>
+<span class="cm">     This Method should be "abstract"</span>
+<span class="cm">     Leave method as protected, as it is only authorized to extender of the class</span>
+<span class="cm">     Make new class that extends and defines init()</span>
+<span class="cm">     Inside references within this class would change from this to super</span>
+<span class="cm">     Repeat process using for, while, recursion</span>
+<span class="cm">     */</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="na">name</span> <span class="o">=</span> <span class="s">"Stream"</span><span class="p">;</span>
+        <span class="n">Stream</span><span class="p">.</span><span class="na">iterate</span><span class="p">(</span><span class="k">new</span> <span class="kt">long</span><span class="o">[]</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="n">f</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="kt">long</span><span class="o">[]</span><span class="p">{</span><span class="n">f</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span> <span class="n">f</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">+</span> <span class="n">f</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">})</span>
+            <span class="p">.</span><span class="na">limit</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">size</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">forEach</span><span class="p">(</span><span class="n">f</span> <span class="o">-&gt;</span> <span class="k">this</span><span class="p">.</span><span class="na">setData</span><span class="p">(</span><span class="n">f</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="cm">/*</span>
+<span class="cm">     Number is added to fibonacci sequence, current state of "list" is added to hash for hashID "num"</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setData</span><span class="p">(</span><span class="kt">long</span> <span class="n">num</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">num</span><span class="p">);</span>
+        <span class="n">hash</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">hashID</span><span class="o">++</span><span class="p">,</span> <span class="n">list</span><span class="p">.</span><span class="na">clone</span><span class="p">());</span>
+    <span class="p">}</span>
+
+    <span class="cm">/*</span>
+<span class="cm">     Custom Getter to return last element in fibonacci sequence</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getNth</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">list</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="cm">/*</span>
+<span class="cm">     Custom Getter to return last fibonacci sequence in HashMap</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">getNthSeq</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">hash</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="cm">/*</span>
+<span class="cm">     Console/Terminal supported print method</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">print</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"Init method = "</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="p">);</span>
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"fibonacci Number "</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="na">size</span> <span class="o">+</span> <span class="s">" = "</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="na">getNth</span><span class="p">());</span>
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"fibonacci List = "</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="na">list</span><span class="p">);</span>
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"fibonacci Hashmap = "</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="na">hash</span><span class="p">);</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span> <span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="k">this</span><span class="p">.</span><span class="na">size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"fibonacci Sequence "</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s">" = "</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="na">getNthSeq</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="cm">/*</span>
+<span class="cm">    Tester class method.  If this becomes abstract you will not be able to test it directly ...</span>
+<span class="cm">    Change this method to  call "main" class of each of the extended classes</span>
+<span class="cm">     */</span>
+    <span class="kd">static</span> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">Fibo</span> <span class="n">fib</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Fibo</span><span class="p">();</span>
+        <span class="n">fib</span><span class="p">.</span><span class="na">print</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">Fibo</span><span class="p">.</span><span class="na">main</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Init method = Stream
+fibonacci Number 20 = 4181
+fibonacci List = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181]
+fibonacci Hashmap = {0=[0], 1=[0, 1], 2=[0, 1, 1], 3=[0, 1, 1, 2], 4=[0, 1, 1, 2, 3], 5=[0, 1, 1, 2, 3, 5], 6=[0, 1, 1, 2, 3, 5, 8], 7=[0, 1, 1, 2, 3, 5, 8, 13], 8=[0, 1, 1, 2, 3, 5, 8, 13, 21], 9=[0, 1, 1, 2, 3, 5, 8, 13, 21, 34], 10=[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55], 11=[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], 12=[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144], 13=[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233], 14=[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377], 15=[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610], 16=[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987], 17=[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597], 18=[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584], 19=[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181]}
+fibonacci Sequence 1 = [0]
+fibonacci Sequence 2 = [0, 1]
+fibonacci Sequence 3 = [0, 1, 1]
+fibonacci Sequence 4 = [0, 1, 1, 2]
+fibonacci Sequence 5 = [0, 1, 1, 2, 3]
+fibonacci Sequence 6 = [0, 1, 1, 2, 3, 5]
+fibonacci Sequence 7 = [0, 1, 1, 2, 3, 5, 8]
+fibonacci Sequence 8 = [0, 1, 1, 2, 3, 5, 8, 13]
+fibonacci Sequence 9 = [0, 1, 1, 2, 3, 5, 8, 13, 21]
+fibonacci Sequence 10 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+fibonacci Sequence 11 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+fibonacci Sequence 12 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
+fibonacci Sequence 13 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]
+fibonacci Sequence 14 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233]
+fibonacci Sequence 15 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377]
+fibonacci Sequence 16 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610]
+fibonacci Sequence 17 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987]
+fibonacci Sequence 18 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597]
+fibonacci Sequence 19 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584]
+fibonacci Sequence 20 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-java"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FibonacciWithMemoization</span> <span class="p">{</span>
+ 
+ <span class="kd">public</span> <span class="kd">static</span> <span class="kt">long</span> <span class="n">fibArray</span><span class="o">[]=</span> <span class="k">new</span> <span class="kt">long</span><span class="o">[</span><span class="mi">93</span><span class="o">]</span><span class="p">;</span>
+ 
+ <span class="kd">public</span> <span class="kd">static</span> <span class="kt">long</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="kt">long</span> <span class="n">n</span><span class="p">){</span>
+  <span class="kt">long</span> <span class="n">fibValue</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">n</span><span class="o">==</span><span class="mi">0</span> <span class="p">){</span>
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">n</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+   <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">fibArray</span><span class="o">[</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">n</span><span class="o">]!=</span><span class="mi">0</span><span class="p">){</span>
+   <span class="k">return</span> <span class="n">fibArray</span><span class="o">[</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">n</span><span class="o">]</span><span class="p">;</span>
+  <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+   <span class="n">fibValue</span><span class="o">=</span><span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">);</span>
+   <span class="n">fibArray</span><span class="o">[</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">n</span><span class="o">]=</span><span class="n">fibValue</span><span class="p">;</span>
+   <span class="k">return</span> <span class="n">fibValue</span><span class="p">;</span>
+  <span class="p">}</span>
+ <span class="p">}</span>
+ 
+ <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[]</span><span class="p">){</span>
+  <span class="n">fibArray</span><span class="o">[</span><span class="mi">0</span><span class="o">]=</span><span class="mi">1</span><span class="p">;</span>
+  <span class="n">fibArray</span><span class="o">[</span><span class="mi">1</span><span class="o">]=</span><span class="mi">1</span><span class="p">;</span>
+  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">93</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kt">long</span> <span class="n">ranth</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span><span class="c1">//(long) Math.floor(Math.random() * 92);</span>
+    <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">ranth</span> <span class="o">+</span> <span class="s">"th Fibonacci number: "</span><span class="o">+</span><span class="n">fibonacci</span><span class="p">(</span><span class="n">ranth</span><span class="p">));</span>
+
+  <span class="p">}</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">FibonacciWithMemoization</span><span class="p">.</span><span class="na">main</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0th Fibonacci number: 0
+1th Fibonacci number: 1
+2th Fibonacci number: 1
+3th Fibonacci number: 2
+4th Fibonacci number: 3
+5th Fibonacci number: 5
+6th Fibonacci number: 8
+7th Fibonacci number: 13
+8th Fibonacci number: 21
+9th Fibonacci number: 34
+10th Fibonacci number: 55
+11th Fibonacci number: 89
+12th Fibonacci number: 144
+13th Fibonacci number: 233
+14th Fibonacci number: 377
+15th Fibonacci number: 610
+16th Fibonacci number: 987
+17th Fibonacci number: 1597
+18th Fibonacci number: 2584
+19th Fibonacci number: 4181
+20th Fibonacci number: 6765
+21th Fibonacci number: 10946
+22th Fibonacci number: 17711
+23th Fibonacci number: 28657
+24th Fibonacci number: 46368
+25th Fibonacci number: 75025
+26th Fibonacci number: 121393
+27th Fibonacci number: 196418
+28th Fibonacci number: 317811
+29th Fibonacci number: 514229
+30th Fibonacci number: 832040
+31th Fibonacci number: 1346269
+32th Fibonacci number: 2178309
+33th Fibonacci number: 3524578
+34th Fibonacci number: 5702887
+35th Fibonacci number: 9227465
+36th Fibonacci number: 14930352
+37th Fibonacci number: 24157817
+38th Fibonacci number: 39088169
+39th Fibonacci number: 63245986
+40th Fibonacci number: 102334155
+41th Fibonacci number: 165580141
+42th Fibonacci number: 267914296
+43th Fibonacci number: 433494437
+44th Fibonacci number: 701408733
+45th Fibonacci number: 1134903170
+46th Fibonacci number: 1836311903
+47th Fibonacci number: 2971215073
+48th Fibonacci number: 4807526976
+49th Fibonacci number: 7778742049
+50th Fibonacci number: 12586269025
+51th Fibonacci number: 20365011074
+52th Fibonacci number: 32951280099
+53th Fibonacci number: 53316291173
+54th Fibonacci number: 86267571272
+55th Fibonacci number: 139583862445
+56th Fibonacci number: 225851433717
+57th Fibonacci number: 365435296162
+58th Fibonacci number: 591286729879
+59th Fibonacci number: 956722026041
+60th Fibonacci number: 1548008755920
+61th Fibonacci number: 2504730781961
+62th Fibonacci number: 4052739537881
+63th Fibonacci number: 6557470319842
+64th Fibonacci number: 10610209857723
+65th Fibonacci number: 17167680177565
+66th Fibonacci number: 27777890035288
+67th Fibonacci number: 44945570212853
+68th Fibonacci number: 72723460248141
+69th Fibonacci number: 117669030460994
+70th Fibonacci number: 190392490709135
+71th Fibonacci number: 308061521170129
+72th Fibonacci number: 498454011879264
+73th Fibonacci number: 806515533049393
+74th Fibonacci number: 1304969544928657
+75th Fibonacci number: 2111485077978050
+76th Fibonacci number: 3416454622906707
+77th Fibonacci number: 5527939700884757
+78th Fibonacci number: 8944394323791464
+79th Fibonacci number: 14472334024676221
+80th Fibonacci number: 23416728348467685
+81th Fibonacci number: 37889062373143906
+82th Fibonacci number: 61305790721611591
+83th Fibonacci number: 99194853094755497
+84th Fibonacci number: 160500643816367088
+85th Fibonacci number: 259695496911122585
+86th Fibonacci number: 420196140727489673
+87th Fibonacci number: 679891637638612258
+88th Fibonacci number: 1100087778366101931
+89th Fibonacci number: 1779979416004714189
+90th Fibonacci number: 2880067194370816120
+91th Fibonacci number: 4660046610375530309
+92th Fibonacci number: 7540113804746346429
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-java"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Fibonacci</span> <span class="kd">extends</span> <span class="n">Fibo</span> <span class="p">{</span>
+
+    <span class="kd">public</span> <span class="nf">Fibonacci</span><span class="p">()</span> <span class="p">{</span>
+
+        <span class="kd">super</span><span class="p">();</span>
+
+    <span class="p">}</span>
+
+    <span class="kd">static</span> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">loopPrint</span><span class="p">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[]</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">Fibonacci</span> <span class="n">fib</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Fibonacci</span><span class="p">();</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span> <span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">fib</span><span class="p">.</span><span class="na">size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"fibonacci Sequence "</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s">" = "</span> <span class="o">+</span> <span class="n">fib</span><span class="p">.</span><span class="na">getNthSeq</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">static</span> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">hashPrint</span><span class="p">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[]</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">Fibonacci</span> <span class="n">fib</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Fibonacci</span><span class="p">();</span>
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"fibonacci Hashmap = "</span> <span class="o">+</span> <span class="n">fib</span><span class="p">.</span><span class="na">hash</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+<span class="n">Fibonacci</span><span class="p">.</span><span class="na">hashPrint</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>fibonacci Sequence 1 = [0]
+fibonacci Sequence 2 = [0, 1]
+fibonacci Sequence 3 = [0, 1, 1]
+fibonacci Sequence 4 = [0, 1, 1, 2]
+fibonacci Sequence 5 = [0, 1, 1, 2, 3]
+fibonacci Sequence 6 = [0, 1, 1, 2, 3, 5]
+fibonacci Sequence 7 = [0, 1, 1, 2, 3, 5, 8]
+fibonacci Sequence 8 = [0, 1, 1, 2, 3, 5, 8, 13]
+fibonacci Sequence 9 = [0, 1, 1, 2, 3, 5, 8, 13, 21]
+fibonacci Sequence 10 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+fibonacci Sequence 11 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+fibonacci Sequence 12 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
+fibonacci Sequence 13 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]
+fibonacci Sequence 14 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233]
+fibonacci Sequence 15 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377]
+fibonacci Sequence 16 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610]
+fibonacci Sequence 17 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987]
+fibonacci Sequence 18 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597]
+fibonacci Sequence 19 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584]
+fibonacci Sequence 20 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="TristanCopley/dnhs-blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/dnhs-blog/jupyter/2022/09/23/fibo.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/dnhs-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/dnhs-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/dnhs-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>An easy to use blogging platform with support for Jupyter Notebooks.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fastai" target="_blank" title="fastai"><svg class="svg-icon grey"><use xlink:href="/dnhs-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/fastdotai" target="_blank" title="fastdotai"><svg class="svg-icon grey"><use xlink:href="/dnhs-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
